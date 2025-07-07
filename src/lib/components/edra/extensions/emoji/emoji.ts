@@ -9,8 +9,10 @@ export interface EmojiExtensionOptions {
 	emojis: EmojiItem[];
 }
 
+const extensionName = 'emoji';
+
 export const EmojiExtension = Extension.create<EmojiExtensionOptions>({
-	name: 'emoji',
+	name: extensionName,
 
 	addOptions() {
 		return {

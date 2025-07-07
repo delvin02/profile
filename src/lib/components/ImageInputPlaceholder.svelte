@@ -42,36 +42,63 @@
 	}
 
 	async function handleFile(file: File) {
-		console.log('handle file');
-
 		if (file.size > 5 * 1024 * 1024) {
-			toast.error('File too big (max 5 MB)');
-			return;
+			return toast.error('File too big (max 5 MB)');
 		}
 
-		const form = new FormData();
-		form.append('image', file);
-		let res: Response;
+		const objectUrl = URL.createObjectURL(file);
+		const img = new Image();
+		img.src = objectUrl;
 
-		try {
-			res = await fetch('/api/upload-image', { method: 'POST', body: form });
-		} catch (err) {
-			toast.error('Upload failed');
-			return;
-		}
-		if (!res.ok) {
-			toast.error(`Upload error: ${res.statusText}`);
-			return;
-		}
-		const { url } = await res.json();
-		onChange(url);
+		img.onload = async () => {
+			URL.revokeObjectURL(objectUrl);
+
+			const ratio = img.width / img.height;
+			if (Math.abs(ratio - 16 / 9) > 0.01) {
+				return toast.error('Image must be 16:9 aspect ratio');
+			}
+
+			const form = new FormData();
+			form.append('image', file);
+
+			let res: Response;
+			try {
+				res = await fetch('/api/image', {
+					method: 'POST',
+					body: form
+				});
+			} catch {
+				return toast.error('Upload failed');
+			}
+
+			if (!res.ok) {
+				return toast.error(`Upload error: ${res.statusText}`);
+			}
+
+			const { url: uploadedUrl } = await res.json();
+			onChange(uploadedUrl);
+		};
+
+		img.onerror = () => {
+			URL.revokeObjectURL(objectUrl);
+			toast.error('Invalid image file');
+		};
 	}
 
 	function handleClick() {
 		fileInput.click();
 	}
 
-	function handleRemove() {
+	async function handleRemove() {
+		if (!imageUrl) {
+			return;
+		}
+
+		await fetch('/api/image', {
+			method: 'DELETE',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ url: imageUrl })
+		});
 		onChange(null);
 	}
 

@@ -4,7 +4,7 @@ import { timestamps } from '../columns.helper';
 import { blog } from './blog';
 
 export const user = mysqlTable('user', {
-	id: serial('id').primaryKey(),
+	id: serial('id').primaryKey().autoincrement(),
 	name: varchar('name', { length: 256 }).notNull(),
 	email: varchar('email', { length: 256 }).notNull().unique(),
 	passwordHash: varchar('password_hash', { length: 60 }).notNull(), // <-- new

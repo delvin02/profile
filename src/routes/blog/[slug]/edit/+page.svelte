@@ -3,27 +3,32 @@
 	import ArrowLeft from '@lucide/svelte/icons/arrow-left';
 	import Clock from '@lucide/svelte/icons/clock';
 	import { Avatar } from 'bits-ui';
-	import { type Content, type JSONContent } from '@tiptap/core';
+	import { type Content } from '@tiptap/core';
 	import Editor from '@/stories/Block/Editor/Editor.svelte';
-	import { FormControl } from '@/lib/components/ui/form';
 	import SuperDebug, { superForm } from 'sveltekit-superforms';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 	import { schema } from './schema';
 	import Label from '@/lib/components/ui/label/label.svelte';
 	import ImageInputPlaceholder from '@/lib/components/ImageInputPlaceholder.svelte';
+	import * as Select from '$lib/components/ui/select/index.js';
+	import type { Tag } from '@/lib/server/db/schema/tag';
+	import Badge from '@/lib/components/ui/badge/badge.svelte';
+	import CreateEditTagDialog from '@/lib/components/CreateEditTagDialog.svelte';
 
 	let { data } = $props();
+
+	let openTagDialog = $state(false);
 
 	const {
 		form: formData,
 		enhance,
 		message,
-		errors
+		errors,
+		constraints
 	} = superForm(data.form, {
 		validators: zod4Client(schema),
 		dataType: 'json',
 		onSubmit({ jsonData }) {
-			console.log(jsonData);
 			jsonData($formData);
 		}
 	});
@@ -49,6 +54,13 @@
 			thumbnailUrl: url
 		}));
 	}
+
+	let selectedTags = $state(data.allTags.filter((t: Tag) => $formData.tags.includes(t.id)));
+
+	function onTagsChange(tagIds: string[]) {
+		formData.tags = tagIds;
+		selectedTags = data.allTags.filter((t: Tag) => tagIds.includes(t.id));
+	}
 </script>
 
 <!-- <SuperDebug
@@ -59,6 +71,13 @@
 	}}
 /> -->
 
+{#if openTagDialog}
+	<CreateEditTagDialog
+		open={openTagDialog}
+		tags={data.allTags}
+		onClose={() => (openTagDialog = false)}
+	/>
+{/if}
 <section class="mx-auto w-full max-w-2xl flex-1 px-5 py-12 leading-6">
 	<Button variant="link" href="/blog">
 		<ArrowLeft />
@@ -73,7 +92,11 @@
 				placeholder="Enter blog title"
 				class="border-primary/80 block w-full border-b border-dashed text-left
 			 text-4xl leading-tight font-semibold break-all whitespace-normal dark:text-white"
+				{...$constraints.title}
 			/>
+			{#if $errors.title}
+				<p class="text-sm text-red-600">{$errors.title}</p>
+			{/if}
 		</div>
 
 		<div class="mt-4 flex flex-col gap-4">
@@ -83,7 +106,51 @@
 				bind:value={$formData.description}
 				name="description"
 				placeholder="Enter blog description"
+				{...$constraints.description}
 			/>
+			{#if $errors.description}
+				<p class="text-sm text-red-600">{$errors.description}</p>
+			{/if}
+		</div>
+
+		<div class="mt-4 flex flex-col gap-4">
+			<Label for="title">Tags</Label>
+			<div class="flex gap-2">
+				<Select.Root
+					name="tags"
+					type="multiple"
+					bind:value={$formData.tags}
+					onValueChange={onTagsChange}
+				>
+					<Select.Trigger class="w-full border-dashed">
+						<div class="flex gap-2">
+							{#if selectedTags.length}
+								{#each selectedTags as tag}
+									<Badge variant="secondary" class="font-mono font-semibold uppercase"
+										>{tag.name}</Badge
+									>
+								{/each}
+							{:else}
+								Select tag(s)
+							{/if}
+						</div>
+					</Select.Trigger>
+					<Select.Content>
+						{#each data.allTags as tag}
+							<Select.Item value={tag.id}>
+								{tag.name}
+							</Select.Item>
+						{/each}
+					</Select.Content>
+				</Select.Root>
+				<Button
+					onclick={() => {
+						openTagDialog = true;
+					}}
+				>
+					Manage tags
+				</Button>
+			</div>
 		</div>
 
 		<div class="mt-8 flex flex-row items-center gap-2 text-sm">

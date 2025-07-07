@@ -13,8 +13,6 @@
 	import TableCol from './menus/TableCol.svelte';
 	import TableRow from './menus/TableRow.svelte';
 	import Link from './menus/Link.svelte';
-	import slashcommand from '../extensions/slash-command/slashcommand.js';
-	import SlashCommandList from './components/SlashCommandList.svelte';
 
 	const lowlight = createLowlight(all);
 

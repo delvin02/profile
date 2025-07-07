@@ -2,9 +2,10 @@ import { mysqlTable, serial, varchar, json, bigint, text } from 'drizzle-orm/mys
 import { relations, type InferInsertModel, type InferSelectModel } from 'drizzle-orm';
 import { timestamps } from '../columns.helper';
 import { user } from './user';
+import { blogTags } from './blogTags';
 
 export const blog = mysqlTable('blog', {
-	id: serial('id').primaryKey(),
+	id: serial('id').primaryKey().autoincrement(),
 	userId: bigint('user_id', { mode: 'number', unsigned: true })
 		.notNull()
 		.references(() => user.id),
@@ -16,11 +17,12 @@ export const blog = mysqlTable('blog', {
 	...timestamps
 });
 
-export const blogRelations = relations(blog, ({ one }) => ({
+export const blogRelations = relations(blog, ({ one, many }) => ({
 	author: one(user, {
 		fields: [blog.userId],
 		references: [user.id]
-	})
+	}),
+	blogTags: many(blogTags)
 }));
 
 export type NewBlog = InferInsertModel<typeof blog>;

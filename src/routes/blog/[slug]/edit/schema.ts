@@ -3,10 +3,8 @@ import { z } from 'zod/v4';
 export const schema = z.object({
 	id: z.int(),
 	thumbnailUrl: z.string().nullable(),
-	title: z.string(),
-	description: z.string(),
-	// content: z.preprocess(
-	// 	(v) => (typeof v === 'string' ? JSON.parse(v) : v),
-	// 	z.record(z.string(), z.any())
-	content: z.any()
+	title: z.string().min(1, 'Title is required'),
+	description: z.string().min(1, 'Description is required'),
+	content: z.any(),
+	tags: z.array(z.coerce.number()).default([])
 });

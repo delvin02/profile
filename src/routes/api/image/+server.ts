@@ -17,3 +17,15 @@ export const POST: RequestHandler = async ({ request }) => {
 	const url = await imageService.upload(buffer, filename);
 	return json({ url });
 };
+
+export const DELETE: RequestHandler = async ({ request, url: baseUrl }) => {
+	const { url: imageUrl } = await request.json();
+	if (typeof imageUrl !== 'string') throw error(400, 'Missing image URL');
+
+	const parsed = new URL(imageUrl, baseUrl.origin);
+	const filename = parsed.pathname.split('/').pop();
+	if (!filename) throw error(400, 'Invalid image URL');
+
+	await imageService.delete(filename);
+	return json({ success: true });
+};

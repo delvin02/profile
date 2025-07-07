@@ -24,8 +24,6 @@ import ListOrdered from '@lucide/svelte/icons/list-ordered';
 import ListChecks from '@lucide/svelte/icons/list-checks';
 import Image from '@lucide/svelte/icons/image';
 import Video from '@lucide/svelte/icons/video';
-import Audio from '@lucide/svelte/icons/audio-lines';
-import IFrame from '@lucide/svelte/icons/code-xml';
 import Table from '@lucide/svelte/icons/table';
 
 const commands: Record<string, EdraToolBarCommands[]> = {

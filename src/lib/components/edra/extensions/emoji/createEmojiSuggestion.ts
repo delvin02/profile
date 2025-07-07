@@ -7,7 +7,7 @@ export function createEmojiSuggestion() {
 	return {
 		items: ({ query }: { query: string }): EmojiItem[] => {
 			if (!query) {
-				return gitHubEmojis.slice(0, 10); // Show first 10 emojis when no query
+				return gitHubEmojis.slice(0, 10);
 			}
 
 			const filtered = gitHubEmojis
@@ -83,7 +83,7 @@ export function createEmojiSuggestion() {
 	};
 }
 
-function updatePosition(props: SuggestionProps, element: HTMLElement) {
+export function updatePosition(props: SuggestionProps, element: HTMLElement) {
 	const { view } = props.editor;
 	const { state } = view;
 	const { from } = state.selection;

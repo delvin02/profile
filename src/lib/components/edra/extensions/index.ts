@@ -26,9 +26,8 @@ import { VideoPlaceholder } from './video/VideoPlaceholder';
 import VideoPlaceHolderComp from '../shadcn/components/VideoPlaceholder.svelte';
 import { VideoExtended } from './video/VideoExtended';
 import VideoExtendedComp from '../shadcn/components/VideoExtended.svelte';
-import slashcommand from './slash-command/slashcommand';
-import SlashCommandList from '../shadcn/components/SlashCommandList.svelte';
 import { EmojiExtension } from './emoji/emoji';
+import { SlashCommand } from './slash-command/slashcommand';
 
 const lowlight = createLowlight(all);
 
@@ -123,7 +122,6 @@ export const TIPTAP_EXTENSIONS: Extensions = [
 	ImageExtended(ImageExtendedComp),
 	VideoPlaceholder(VideoPlaceHolderComp),
 	VideoExtended(VideoExtendedComp),
-	slashcommand(SlashCommandList),
-	//SlashExtension,
+	SlashCommand,
 	EmojiExtension
 ];

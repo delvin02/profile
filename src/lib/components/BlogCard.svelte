@@ -5,7 +5,7 @@
 
 	export interface BlogCardProps {
 		publishDate: Date;
-		imageSource: string;
+		imageSource: string | null;
 		imageAlt: string;
 		title: string;
 		link: string;
@@ -27,7 +27,7 @@
 	</Card.Content>
 	<Card.Footer>
 		{#each tags as tag}
-			<Badge variant="secondary" class="mr-1 font-mono font-semibold">{tag}</Badge>
+			<Badge variant="secondary" class="mr-1 font-mono font-semibold uppercase">{tag}</Badge>
 		{/each}
 	</Card.Footer>
 </Card.Root>

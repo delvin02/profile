@@ -25,7 +25,7 @@
 	}
 </script>
 
-<div class="bg-background z-50 rounded-md border border-dashed">
+<div class="bg-background border-primary z-50 rounded-md border border-dashed">
 	{#if editor && !editor.isDestroyed}
 		<div class="sticky top-0 z-50">
 			<EdraToolBar

@@ -5,6 +5,9 @@ import { eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
 import { schema } from './schema';
+import { user } from '@/lib/server/db/schema';
+import { tag } from '@/lib/server/db/schema/tag';
+import { blogTags } from '@/lib/server/db/schema/blogTags';
 
 export async function load({ params }) {
 	const slug = params.slug;
@@ -13,17 +16,51 @@ export async function load({ params }) {
 		throw error(400, 'Blog slug is missing');
 	}
 
-	const post = await db.query.blog.findFirst({
-		where: eq(blog.slug, slug)
-	});
+	const [post] = await db
+		.select({
+			id: blog.id,
+			title: blog.title,
+			description: blog.description,
+			slug: blog.slug,
+			thumbnailUrl: blog.thumbnailUrl,
+			content: blog.content,
+			createdAt: blog.createdAt,
+			updatedAt: blog.updatedAt,
+			author: {
+				id: user.id,
+				name: user.name,
+				email: user.email
+			}
+		})
+		.from(blog)
+		.leftJoin(user, eq(blog.userId, user.id))
+		.where(eq(blog.slug, slug))
+		.limit(1);
 
 	if (!post) {
 		throw error(404, 'Blog post not found');
 	}
 
+	const allTags = await db.select({ id: tag.id, name: tag.name }).from(tag);
+
+	const assigned = await db
+		.select({ id: blogTags.tagId })
+		.from(blogTags)
+		.where(eq(blogTags.blogId, post.id))
+		.then((rows) => rows.map((r) => r.id));
+
+	const initialFormData = {
+		...post,
+		tags: assigned
+	};
+
+	const form = await superValidate(initialFormData, zod4(schema));
+
 	return {
 		blog: post,
-		form: await superValidate(post, zod4(schema))
+		author: post.author,
+		allTags,
+		form
 	};
 }
 
@@ -34,8 +71,8 @@ export const actions: Actions = {
 			return { form };
 		}
 
-		const { id, thumbnailUrl, title, description, content } = form.data;
-		console.log(form.data);
+		const { id, thumbnailUrl, title, description, content, tags } = form.data;
+
 		await db
 			.update(blog)
 			.set({
@@ -45,6 +82,13 @@ export const actions: Actions = {
 				thumbnailUrl
 			})
 			.where(eq(blog.id, id));
+
+		await db.delete(blogTags).where(eq(blogTags.blogId, id));
+
+		if (tags.length) {
+			const rows = tags.map((tagId) => ({ blogId: id, tagId }));
+			await db.insert(blogTags).values(rows);
+		}
 
 		redirect(303, `/blog/${params.slug}`);
 	}

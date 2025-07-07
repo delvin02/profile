@@ -13,7 +13,7 @@
 <Toaster position="top-center" richColors />
 <article class="flex min-h-screen flex-col">
 	<Header />
-	<main class="flex min-h-0 flex-1 flex-col">
+	<main class="flex min-h-full flex-1 flex-col">
 		{@render children()}
 	</main>
 	<Footer />
