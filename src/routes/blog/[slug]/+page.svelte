@@ -34,7 +34,7 @@
 			Blogs
 		</Button>
 		{#if data.blog.thumbnailUrl}
-			<img src={data.blog.thumbnailUrl} alt="Blog thumbnail" class="max-w-full rounded-lg" />
+			<img src={data.blog.thumbnailUrl} alt="Blog thumbnail" class="mt-4 max-w-full rounded-lg" />
 		{/if}
 		<div class="mt-4 flex flex-col gap-4">
 			<h2

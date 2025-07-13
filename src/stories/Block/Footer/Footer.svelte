@@ -14,7 +14,7 @@
 			<Button variant="link" class="cursor-pointer">
 				<Linkedin class="size-6 stroke-blue-500" />
 			</Button>
-			<Button variant="link" class="cursor-pointer"
+			<Button variant="link" class="cursor-pointer" href="/resume.pdf"
 				><FileUser class="size-6 stroke-gray-500 dark:stroke-white" />
 			</Button>
 		</div>

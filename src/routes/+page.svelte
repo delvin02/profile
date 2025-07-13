@@ -1,11 +1,10 @@
 <script>
 	import Profile from '../stories/assets/profile.jpg';
 	import BlogCard from '@/lib/components/BlogCard.svelte';
-	import Docs from '../stories/assets/docs.png';
 	import Typewriter from '@/lib/components/Typewriter.svelte';
 	import Button from '@/lib/components/ui/button/button.svelte';
 
-	const date = new Date('2022-08-18');
+	let { data } = $props();
 </script>
 
 <svelte:head>
@@ -36,22 +35,16 @@
 		<h1 class="mb-6 text-center text-4xl font-bold">Some blogs I've wrote</h1>
 		<div class="flex flex-col items-center gap-6">
 			<div class="flex flex-col gap-4 md:grid md:grid-cols-2">
-				<BlogCard
-					publishDate={date}
-					imageSource={Docs}
-					imageAlt="test"
-					title="Build a Landing Page with Chakra UI"
-					link="/blog/morning-hikes"
-					tags={['storybook', 'ui', 'guide']}
-				/>
-				<BlogCard
-					publishDate={date}
-					imageSource={Docs}
-					imageAlt="test"
-					title="Build a Landing Page with Chakra UI"
-					link="/blog/morning-hikes"
-					tags={['storybook', 'ui', 'guide']}
-				/>
+				{#each data.blogs as blog}
+					<BlogCard
+						publishDate={blog.createdAt}
+						imageSource={blog.thumbnailUrl}
+						imageAlt={blog.title + ' thumbnail image'}
+						title={blog.title}
+						link="/blog/{blog.slug}"
+						tags={blog.blogTags.map((t) => t.tag.name)}
+					/>
+				{/each}
 			</div>
 			<Button variant="secondary" href="/blog">Read more ></Button>
 		</div>

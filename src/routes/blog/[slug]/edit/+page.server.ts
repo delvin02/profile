@@ -9,7 +9,11 @@ import { user } from '@/lib/server/db/schema';
 import { tag } from '@/lib/server/db/schema/tag';
 import { blogTags } from '@/lib/server/db/schema/blogTags';
 
-export async function load({ params }) {
+export async function load({ params, locals }) {
+	if (!locals.user) {
+		throw redirect(302, '/admin');
+	}
+
 	const slug = params.slug;
 
 	if (!slug) {

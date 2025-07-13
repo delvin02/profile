@@ -49,13 +49,10 @@
 							class="flex h-full w-1/2 items-center justify-center bg-white/90 dark:bg-gray-800/90"
 						>
 							<div class="mt-4 flex flex-col gap-3 space-y-2">
-								<a href="/work" class="rounded px-2 py-1 text-2xl font-medium transition-all"
-									>Work</a
-								>
 								<a href="/blog" class="rounded px-2 py-1 text-2xl font-medium transition-all"
 									>Blog</a
 								>
-								<a href="/blog" class="rounded px-2 py-1 text-2xl font-medium transition-all"
+								<a href="/resume.pdf" class="rounded px-2 py-1 text-2xl font-medium transition-all"
 									>Resume</a
 								>
 							</div>
@@ -65,9 +62,8 @@
 
 				<!-- DESKTOP: Inline nav + theme toggle -->
 				<div class="hidden items-center gap-4 md:flex">
-					<Button size="sm" variant="ghost" href="/work">Work</Button>
 					<Button size="sm" variant="ghost" href="/blog">Blog</Button>
-					<Button size="sm" variant="ghost" href="/resume">Resume</Button>
+					<Button size="sm" variant="ghost" href="/resume.pdf">Resume</Button>
 
 					<Button
 						onclick={toggleMode}

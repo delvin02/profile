@@ -14,6 +14,7 @@
 	import type { Tag } from '@/lib/server/db/schema/tag';
 	import Badge from '@/lib/components/ui/badge/badge.svelte';
 	import CreateEditTagDialog from '@/lib/components/CreateEditTagDialog.svelte';
+	import { invalidate } from '$app/navigation';
 
 	let { data } = $props();
 
@@ -55,11 +56,15 @@
 		}));
 	}
 
+	let tagStringIds = $state($formData.tags.map(String));
 	let selectedTags = $state(data.allTags.filter((t: Tag) => $formData.tags.includes(t.id)));
 
 	function onTagsChange(tagIds: string[]) {
-		formData.tags = tagIds;
-		selectedTags = data.allTags.filter((t: Tag) => tagIds.includes(t.id));
+		formData.update((f) => ({
+			...f,
+			tags: tagIds.map(Number)
+		}));
+		selectedTags = data.allTags.filter((t: Tag) => tagIds.includes(t.id.toString()));
 	}
 </script>
 
@@ -75,7 +80,10 @@
 	<CreateEditTagDialog
 		open={openTagDialog}
 		tags={data.allTags}
-		onClose={() => (openTagDialog = false)}
+		onClose={async () => {
+			openTagDialog = false;
+			await invalidate('allTags');
+		}}
 	/>
 {/if}
 <section class="mx-auto w-full max-w-2xl flex-1 px-5 py-12 leading-6">
@@ -83,7 +91,9 @@
 		<ArrowLeft />
 		Blogs
 	</Button>
-	<ImageInputPlaceholder imageUrl={$formData.thumbnailUrl} onChange={handleThumbnailChange} />
+	<div class="mt-4">
+		<ImageInputPlaceholder imageUrl={$formData.thumbnailUrl} onChange={handleThumbnailChange} />
+	</div>
 	<form method="POST" use:enhance>
 		<div class="mt-4 flex flex-col gap-4">
 			<Label for="title">Title</Label>
@@ -119,7 +129,7 @@
 				<Select.Root
 					name="tags"
 					type="multiple"
-					bind:value={$formData.tags}
+					bind:value={tagStringIds}
 					onValueChange={onTagsChange}
 				>
 					<Select.Trigger class="w-full border-dashed">
@@ -137,7 +147,7 @@
 					</Select.Trigger>
 					<Select.Content>
 						{#each data.allTags as tag}
-							<Select.Item value={tag.id}>
+							<Select.Item value={tag.id.toString()}>
 								{tag.name}
 							</Select.Item>
 						{/each}

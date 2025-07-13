@@ -32,7 +32,6 @@
 		<div class="flex flex-col items-center gap-6">
 			<div class="flex flex-col gap-4 md:grid md:grid-cols-2">
 				{#each data.blogs as blog}
-					{console.log(blog)}
 					<BlogCard
 						publishDate={blog.createdAt}
 						imageSource={blog.thumbnailUrl}

@@ -8,7 +8,11 @@ import { blogTags } from '@/lib/server/db/schema/blogTags';
 import { createBlogSchema } from './schema';
 import { slugify } from '@/lib/utils/blog';
 
-export async function load() {
+export async function load({ locals }) {
+	if (!locals.user) {
+		throw redirect(302, '/admin');
+	}
+
 	const allTags = await db.select({ id: tag.id, name: tag.name }).from(tag);
 
 	const form = await superValidate(
