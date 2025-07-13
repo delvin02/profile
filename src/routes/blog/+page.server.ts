@@ -1,10 +1,13 @@
-import { error } from '@sveltejs/kit';
+import { error, redirect } from '@sveltejs/kit';
 import { db } from '$lib/server/db';
 import { blog } from '$lib/server/db/schema/blog';
 import { blogTags, tag } from '@/lib/server/db/schema';
 import { eq } from 'drizzle-orm';
 
-export async function load() {
+export async function load({ locals }) {
+	if (!locals.user) {
+		throw redirect(302, '/admin');
+	}
 	const posts = await db.query.blog.findMany({
 		with: {
 			blogTags: {
