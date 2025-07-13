@@ -7,7 +7,6 @@ import { eq } from 'drizzle-orm';
 export async function load() {
 	const posts = await db.query.blog.findMany({
 		with: {
-			author: true,
 			blogTags: {
 				with: {
 					tag: true

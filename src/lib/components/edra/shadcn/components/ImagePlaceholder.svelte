@@ -21,7 +21,7 @@
 		let res: Response;
 
 		try {
-			res = await fetch('/api/upload-image', { method: 'POST', body: form });
+			res = await fetch('/api/image', { method: 'POST', body: form });
 		} catch (err) {
 			toast.error('Upload failed');
 			return;

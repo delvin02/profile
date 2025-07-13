@@ -38,8 +38,7 @@ export const actions: Actions = {
 			description,
 			thumbnailUrl,
 			slug,
-			content,
-			userId: 1
+			content
 		};
 
 		const [inserted] = await db.insert(blog).values(newBlog).$returningId();

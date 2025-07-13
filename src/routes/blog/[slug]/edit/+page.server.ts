@@ -5,7 +5,6 @@ import { eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
 import { schema } from './schema';
-import { user } from '@/lib/server/db/schema';
 import { tag } from '@/lib/server/db/schema/tag';
 import { blogTags } from '@/lib/server/db/schema/blogTags';
 
@@ -29,15 +28,9 @@ export async function load({ params, locals }) {
 			thumbnailUrl: blog.thumbnailUrl,
 			content: blog.content,
 			createdAt: blog.createdAt,
-			updatedAt: blog.updatedAt,
-			author: {
-				id: user.id,
-				name: user.name,
-				email: user.email
-			}
+			updatedAt: blog.updatedAt
 		})
 		.from(blog)
-		.leftJoin(user, eq(blog.userId, user.id))
 		.where(eq(blog.slug, slug))
 		.limit(1);
 
@@ -62,7 +55,6 @@ export async function load({ params, locals }) {
 
 	return {
 		blog: post,
-		author: post.author,
 		allTags,
 		form
 	};

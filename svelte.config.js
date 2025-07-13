@@ -8,7 +8,7 @@ const __dirname = path.dirname(__filename);
 
 const config = {
 	preprocess: vitePreprocess(),
-	kit: { 
+	kit: {
 		adapter: adapter(),
 		alias: {
 			'@': path.resolve(__dirname, 'src'),

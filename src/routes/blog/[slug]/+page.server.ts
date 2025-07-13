@@ -11,10 +11,7 @@ export async function load({ params }) {
 	}
 
 	const post = await db.query.blog.findFirst({
-		where: eq(blog.slug, slug),
-		with: {
-			author: true
-		}
+		where: eq(blog.slug, slug)
 	});
 
 	if (!post) {

@@ -15,7 +15,7 @@
 
 <header>
 	<div class="flex items-center justify-between bg-white px-5 py-4 dark:bg-gray-900">
-		<h1><a href="/">ENG WEI THENG</a></h1>
+		<h1 class="text-4xl"><a href="/">ENG WEI THENG</a></h1>
 		<div class="flex flex-row gap-4">
 			<nav class="flex items-center justify-between">
 				<div class="md:hidden">
@@ -70,7 +70,7 @@
 						variant="outline"
 						size="icon"
 						aria-label="Toggle theme"
-						class="relative"
+						class="relative cursor-pointer"
 					>
 						<SunIcon
 							class="h-5 w-5 scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90"

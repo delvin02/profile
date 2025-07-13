@@ -1,14 +1,15 @@
 <script>
-	import Profile from '../stories/assets/profile.jpg';
 	import BlogCard from '@/lib/components/BlogCard.svelte';
 	import Typewriter from '@/lib/components/Typewriter.svelte';
 	import Button from '@/lib/components/ui/button/button.svelte';
+	import { env } from '$env/dynamic/public';
 
+	const PUBLIC_ADMIN_PROFILE_PICTURE_PATH = env.PUBLIC_ADMIN_PROFILE_PICTURE_PATH;
 	let { data } = $props();
 </script>
 
 <svelte:head>
-	<title>Home</title>
+	<title>{env.PUBLIC_ADMIN_NAME}</title>
 </svelte:head>
 
 <section class="mx-auto max-w-2xl flex-1 px-5 pt-12 leading-6">
@@ -21,14 +22,20 @@
 		</h2>
 		<Typewriter text="Front-end Developer | Biotechnologist" speed={80} loop={false} />
 
-		<img src={Profile} class="mx-auto my-4 h-48 w-48 rounded-full" alt="Delvin's profile" />
+		<img
+			src={PUBLIC_ADMIN_PROFILE_PICTURE_PATH}
+			class="mx-auto my-4 h-48 w-48 rounded-full"
+			alt="Delvin's profile"
+		/>
 		<p class="text-center">Hey! I'm Jim, a founder and software engineer based on Greece.</p>
 		<p class="text-center">
 			Currently building MagicPattern and Brandbird. In the past decade, I've spent time as a design
 			and software engineering contractor.
 		</p>
 		<p class="my-4">
-			I'm passionate about <Button variant="link" size="sm" class="font-bold">blogging</Button>.
+			I'm passionate about <Button variant="link" size="sm" class="cursor-pointer px-0 font-bold"
+				>blogging</Button
+			>.
 		</p>
 	</div>
 	<div class="mt-8">

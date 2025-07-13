@@ -7,6 +7,7 @@
 	import { generateHTML, type JSONContent } from '@tiptap/core';
 	import { TIPTAP_EXTENSIONS } from '@/lib/components/edra/extensions';
 	import Loading from '@/stories/Block/Loading/Loading.svelte';
+	import { env } from '$env/dynamic/public';
 
 	let { data } = $props();
 
@@ -24,6 +25,23 @@
 		loading = false;
 	});
 </script>
+
+<svelte:head>
+	<title>{data.blog.title}</title>
+	<meta name="description" content={data.blog.description} />
+	<link rel="canonical" href={'/blog/' + data.blog.slug} />
+
+	<meta property="og:type" content="article" />
+	<meta property="og:title" content={data.blog.title} />
+	<meta property="og:description" content={data.blog.description} />
+	<meta property="og:url" content={'/blog/' + data.blog.slug} />
+	<meta property="og:image" content={data.blog.thumbnailUrl} />
+
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content={data.blog.title} />
+	<meta name="twitter:description" content={data.blog.description} />
+	<meta name="twitter:image" content={data.blog.thumbnailUrl} />
+</svelte:head>
 
 {#if loading}
 	<Loading />
@@ -52,11 +70,15 @@
 			<div class="flex items-center gap-2">
 				<div class="size-8">
 					<Avatar.Root>
-						<Avatar.Image src="https://github.com/shadcn.png" alt="@shadcn" class="rounded-4xl" />
+						<Avatar.Image
+							src={env.PUBLIC_ADMIN_PROFILE_PICTURE_PATH}
+							alt="@shadcn"
+							class="rounded-4xl"
+						/>
 						<Avatar.Fallback>CN</Avatar.Fallback>
 					</Avatar.Root>
 				</div>
-				<p class="mt-0">Written by <b>{data.blog.author.name}</b></p>
+				<p class="mt-0">Written by <b>{env.PUBLIC_ADMIN_NAME}</b></p>
 			</div>
 			<p class="mt-0 font-bold">•</p>
 			<p class="text-muted-foreground mt-0">{publishedDate}</p>

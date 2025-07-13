@@ -15,6 +15,7 @@
 	import Badge from '@/lib/components/ui/badge/badge.svelte';
 	import CreateEditTagDialog from '@/lib/components/CreateEditTagDialog.svelte';
 	import { invalidate } from '$app/navigation';
+	import { env } from '$env/dynamic/public';
 
 	let { data } = $props();
 
@@ -167,7 +168,11 @@
 			<div class="flex items-center gap-2">
 				<div class="size-8">
 					<Avatar.Root>
-						<Avatar.Image src="https://github.com/shadcn.png" alt="@shadcn" class="rounded-4xl" />
+						<Avatar.Image
+							src={env.PUBLIC_ADMIN_PROFILE_PICTURE_PATH}
+							alt="@shadcn"
+							class="rounded-4xl"
+						/>
 						<Avatar.Fallback>CN</Avatar.Fallback>
 					</Avatar.Root>
 				</div>
