@@ -5,9 +5,6 @@ import { blogTags, tag } from '@/lib/server/db/schema';
 import { eq } from 'drizzle-orm';
 
 export async function load({ locals }) {
-	if (!locals.user) {
-		throw redirect(302, '/admin');
-	}
 	const posts = await db.query.blog.findMany({
 		with: {
 			blogTags: {
