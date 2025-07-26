@@ -15,12 +15,12 @@ export interface SlashCommandExtensionOptions {
 export function createSlashSuggestion() {
 	return {
 		items: ({ query }: { query: string }) => {
-			console.log(query);
+			const q = query.toLowerCase().trim();
 			const withFilteredCommands = GROUPS.map((group) => ({
 				...group,
 				commands: group.actions.filter((item) => {
 					const labelNormalized = item.tooltip!.toLowerCase().trim();
-					const queryNormalized = query.toLowerCase().trim();
+					const queryNormalized = q;
 					return labelNormalized.includes(queryNormalized);
 				})
 			}));
@@ -71,7 +71,15 @@ export function createSlashSuggestion() {
 				},
 
 				onUpdate(props: SuggestionProps) {
-					component.props = props;
+					if (component) {
+						unmount(component);
+					}
+
+					component = mount(SlashCommandList, {
+						target: element,
+						props: { ...props }
+					});
+
 					updatePosition(props, element);
 				},
 

@@ -3,6 +3,7 @@
 	import Trash from '@lucide/svelte/icons/trash';
 	import { toast } from 'svelte-sonner';
 	import type { Icon } from '@lucide/svelte';
+	import { cn } from '../utils';
 
 	interface Props {
 		imageUrl?: string | null;
@@ -118,7 +119,7 @@
 	onchange={onFileSelected}
 />
 {#if imageUrl}
-	<div class="group relative my-4">
+	<div class={cn('group relative my-4', className)}>
 		<img src={imageUrl} alt="Uploaded preview" class="max-w-full rounded-lg" />
 		<div
 			class="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity hover:opacity-100"
@@ -136,14 +137,18 @@
 	<button
 		type="button"
 		aria-label="Upload image"
-		class="placeholder bg-secondary hover:bg-secondary/80 flex w-full flex-col items-center justify-center border-2 border-dashed p-6 text-center"
+		class={cn(
+			'placeholder hover:bg-secondary/80 flex w-full cursor-pointer flex-col items-center justify-center border-2 border-dashed p-6 text-center',
+			className,
+			isDragging === true ? 'bg-secondary/80' : 'bg-secondary'
+		)}
 		onclick={handleClick}
 		ondragover={onDragOver}
 		ondragleave={onDragLeave}
 		ondrop={onDrop}
 	>
 		<ImageUp class="mb-2 size-8" aria-hidden="true" />
-		<p class="mt-4 font-medium">Click to upload or drag and drop</p>
-		<p class="text-sm text-gray-500">Maximum file size 5 MB</p>
+		<p class="mt-4 font-medium">{title}</p>
+		<p class="text-sm text-gray-500">{description}</p>
 	</button>
 {/if}

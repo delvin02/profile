@@ -1,9 +1,5 @@
-import type { Handle } from '@sveltejs/kit';
+import { sequence } from '@sveltejs/kit/hooks';
+import { session } from './lib/hooks/session';
+import { subdomain } from './lib/hooks/subdomain';
 
-export const handle: Handle = async ({ event, resolve }) => {
-	const isAuthed = event.cookies.get('auth') === '1';
-
-	event.locals.user = isAuthed ? { role: 'admin' } : null;
-
-	return resolve(event);
-};
+export const handle = sequence(subdomain, session);

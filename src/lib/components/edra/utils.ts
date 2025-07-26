@@ -98,7 +98,6 @@ export function focusEditor(editor: Editor | undefined, event?: MouseEvent | Key
 	if (!editor) return;
 	// Check if there is a text selection already (i.e. a non-empty selection)
 	const selection = window.getSelection();
-	console.log('selection', selection);
 	if (selection && selection.toString().length > 0) {
 		// Focus the editor without modifying selection
 		editor.chain().focus().run();

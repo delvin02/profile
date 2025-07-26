@@ -9,22 +9,25 @@ import { createBlogSchema } from './schema';
 import { slugify } from '@/lib/utils/blog';
 
 export async function load({ locals }) {
-	if (!locals.user) {
-		throw redirect(302, '/admin');
+	if (!locals.auth) {
+		throw redirect(302, '/login');
 	}
 
 	const allTags = await db.select({ id: tag.id, name: tag.name }).from(tag);
 
 	const form = await superValidate(
-		{ title: 'Title here', description: 'Description here', content: {}, tags: [] },
+		{ title: 'Enter title here', description: 'Enter description here', content: {}, tags: [] },
 		zod4(createBlogSchema)
 	);
 
-	return { allTags, form };
+	return { allTags, form, user: locals.auth };
 }
 
 export const actions: Actions = {
-	default: async ({ request }) => {
+	default: async ({ request, locals }) => {
+		if (!locals.auth) {
+			throw redirect(302, '/login');
+		}
 		const form = await superValidate(request, zod4(createBlogSchema));
 		if (!form.valid) {
 			return { form };
@@ -34,6 +37,7 @@ export const actions: Actions = {
 
 		const slug = slugify(title);
 		const newBlog: NewBlog = {
+			userId: locals.auth.id,
 			title,
 			description,
 			thumbnailUrl,

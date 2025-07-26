@@ -18,7 +18,7 @@
 		event.preventDefault();
 		error = null;
 
-		const res = await fetch('/admin', {
+		const res = await fetch('/login', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'

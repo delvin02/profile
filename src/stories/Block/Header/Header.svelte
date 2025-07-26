@@ -11,11 +11,13 @@
 		SheetOverlay,
 		SheetTrigger
 	} from '@/lib/components/ui/sheet/index.js';
+
+	const { user } = $props();
 </script>
 
 <header>
 	<div class="flex items-center justify-between bg-white px-5 py-4 dark:bg-gray-900">
-		<h1 class="text-4xl"><a href="/">ENG WEI THENG</a></h1>
+		<h1 class="text-2xl"><a href="/">{user.name.toUpperCase()}</a></h1>
 		<div class="flex flex-row gap-4">
 			<nav class="flex items-center justify-between">
 				<div class="md:hidden">
@@ -56,6 +58,16 @@
 									>Resume</a
 								>
 							</div>
+							{#if user}
+								<form method="POST" action="/logout">
+									<Button
+										variant="destructive"
+										type="submit"
+										class="cursor-pointer rounded px-2 py-1 text-2xl font-medium transition-all"
+										>Logout</Button
+									>
+								</form>
+							{/if}
 						</SheetContent>
 					</Sheet>
 				</div>
@@ -79,6 +91,12 @@
 							class="absolute h-5 w-5 scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0"
 						/>
 					</Button>
+
+					{#if user}
+						<form method="POST" action="/logout">
+							<Button variant="destructive" type="submit" class="cursor-pointer">Logout</Button>
+						</form>
+					{/if}
 				</div>
 			</nav>
 		</div>

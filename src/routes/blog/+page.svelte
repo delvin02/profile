@@ -23,7 +23,7 @@
 	<div class="mt-8">
 		<div class="align-center mb-4 flex flex-row justify-center">
 			{#each data.tags as tag}
-				<Button variant="link" size="sm"
+				<Button variant="link" size="sm" href="/blog?tagId={tag.id}"
 					><Badge variant="secondary" class="font-mono font-semibold uppercase">{tag.name}</Badge
 					></Button
 				>

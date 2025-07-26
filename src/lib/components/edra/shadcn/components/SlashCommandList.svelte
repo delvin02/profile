@@ -80,7 +80,7 @@
 <svelte:window onkeydown={handleKeyDown} />
 
 {#if items.length}
-	<ScrollArea.Root class="h-72 w-48 rounded-md border">
+	<ScrollArea.Root class="max-h-72 w-48 rounded-md border">
 		<Command.Root>
 			{#each items as grp, groupIndex (groupIndex)}
 				<Command.Group heading={grp.title}>

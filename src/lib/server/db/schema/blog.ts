@@ -1,12 +1,12 @@
-import { mysqlTable, serial, varchar, json, bigint, text } from 'drizzle-orm/mysql-core';
+import { mysqlTable, varchar, json, bigint, text, int } from 'drizzle-orm/mysql-core';
 import { relations, type InferInsertModel, type InferSelectModel } from 'drizzle-orm';
 import { timestamps } from '../columns.helper';
 import { blogTags } from './blogTags';
 import { user } from './user';
 
 export const blog = mysqlTable('blog', {
-	id: serial('id').primaryKey().autoincrement(),
-	userId: bigint('user_id', { mode: 'number', unsigned: true })
+	id: int('id').primaryKey().autoincrement(),
+	userId: int('user_id')
 		.notNull()
 		.references(() => user.id),
 	thumbnailUrl: varchar('thumbnail_url', { length: 512 }),
@@ -18,7 +18,7 @@ export const blog = mysqlTable('blog', {
 });
 
 export const blogRelations = relations(blog, ({ one, many }) => ({
-	author: one(user, {
+	user: one(user, {
 		fields: [blog.userId],
 		references: [user.id]
 	}),

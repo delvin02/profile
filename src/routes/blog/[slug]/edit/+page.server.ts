@@ -9,8 +9,8 @@ import { tag } from '@/lib/server/db/schema/tag';
 import { blogTags } from '@/lib/server/db/schema/blogTags';
 
 export async function load({ params, locals }) {
-	if (!locals.user) {
-		throw redirect(302, '/admin');
+	if (!locals.auth) {
+		throw redirect(302, '/login');
 	}
 
 	const slug = params.slug;
@@ -56,7 +56,8 @@ export async function load({ params, locals }) {
 	return {
 		blog: post,
 		allTags,
-		form
+		form,
+		user: locals.auth
 	};
 }
 

@@ -1,15 +1,23 @@
-<script>
+<script lang="ts">
 	import BlogCard from '@/lib/components/BlogCard.svelte';
+	import { TIPTAP_EXTENSIONS } from '@/lib/components/edra/extensions/index.js';
 	import Typewriter from '@/lib/components/Typewriter.svelte';
 	import Button from '@/lib/components/ui/button/button.svelte';
-	import { env } from '$env/dynamic/public';
+	import { generateHTML, type JSONContent } from '@tiptap/core';
+	import { onMount } from 'svelte';
 
-	const PUBLIC_ADMIN_PROFILE_PICTURE_PATH = env.PUBLIC_ADMIN_PROFILE_PICTURE_PATH;
 	let { data } = $props();
+	let htmlContent = $state();
+
+	const user = data.user;
+
+	onMount(() => {
+		htmlContent = generateHTML(user.bio as JSONContent, TIPTAP_EXTENSIONS);
+	});
 </script>
 
 <svelte:head>
-	<title>{env.PUBLIC_ADMIN_NAME}</title>
+	<title>{user.name.toUpperCase()}</title>
 </svelte:head>
 
 <section class="mx-auto max-w-2xl flex-1 px-5 pt-12 leading-6">
@@ -20,23 +28,16 @@
 		>
 			Eng wei theng
 		</h2>
-		<Typewriter text="Front-end Developer | Biotechnologist" speed={80} loop={false} />
+		<Typewriter text={user.headline} speed={80} loop={false} />
 
 		<img
-			src={PUBLIC_ADMIN_PROFILE_PICTURE_PATH}
+			src={user.profilePictureUrl}
 			class="mx-auto my-4 h-48 w-48 rounded-full"
-			alt="Delvin's profile"
+			alt="{user.name}'s profile"
 		/>
-		<p class="text-center">Hey! I'm Jim, a founder and software engineer based on Greece.</p>
-		<p class="text-center">
-			Currently building MagicPattern and Brandbird. In the past decade, I've spent time as a design
-			and software engineering contractor.
-		</p>
-		<p class="my-4">
-			I'm passionate about <Button variant="link" size="sm" class="cursor-pointer px-0 font-bold"
-				>blogging</Button
-			>.
-		</p>
+		<div class="tiptap flex flex-col">
+			{@html htmlContent || 'No content available.'}
+		</div>
 	</div>
 	<div class="mt-8">
 		<h1 class="mb-6 text-center text-4xl font-bold">Some blogs I've wrote</h1>

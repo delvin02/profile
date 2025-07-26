@@ -10,12 +10,13 @@
 	import { enhance } from '$app/forms';
 
 	interface Props {
-		tags: Tag[];
+		tags: Partial<Tag>[];
 		open: boolean;
 		onClose: () => void;
+		onChange: (tags: Partial<Tag>[]) => void;
 	}
 
-	let { open, tags = [], onClose }: Props = $props();
+	let { open, tags = [], onClose, onChange }: Props = $props();
 
 	let isSubmitting = $state(false);
 	let name = $state('');
@@ -43,7 +44,8 @@
 
 			const { tag } = await res.json();
 			toast.success('Tag created successfully!');
-			return tag as Tag;
+			tags.push(tag as Tag);
+			onChange(tags);
 		} catch (e) {
 			console.log(e);
 			toast.error('Something went wrong');

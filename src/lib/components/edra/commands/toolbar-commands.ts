@@ -358,16 +358,16 @@ const commands: Record<string, EdraToolBarCommands[]> = {
 				chain.run();
 			},
 			isActive: (editor) => editor.isActive('image-placeholder')
-		},
-		{
-			icon: Video,
-			name: 'video-placeholder',
-			tooltip: 'Video Placeholder',
-			onClick: (editor) => {
-				editor.chain().focus().insertVideoPlaceholder().run();
-			},
-			isActive: (editor) => editor.isActive('video-placeholder')
 		}
+		// {
+		// 	icon: Video,
+		// 	name: 'video-placeholder',
+		// 	tooltip: 'Video Placeholder',
+		// 	onClick: (editor) => {
+		// 		editor.chain().focus().insertVideoPlaceholder().run();
+		// 	},
+		// 	isActive: (editor) => editor.isActive('video-placeholder')
+		// }
 		// {
 		// 	icon: Audio,
 		// 	name: 'audio-placeholder',

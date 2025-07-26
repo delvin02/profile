@@ -11,9 +11,9 @@
 	import ImageInputPlaceholder from '@/lib/components/ImageInputPlaceholder.svelte';
 	import * as Select from '$lib/components/ui/select/index.js';
 	import type { Tag } from '@/lib/server/db/schema/tag';
-	import Badge from '@/lib/components/ui/badge/badge.svelte';
 	import CreateEditTagDialog from '@/lib/components/CreateEditTagDialog.svelte';
 	import { createBlogSchema } from './schema';
+	import { invalidate } from '$app/navigation';
 
 	let { data } = $props();
 
@@ -54,19 +54,29 @@
 		}));
 	}
 
-	let selectedTags = $state(data.allTags.filter((t: Tag) => $formData.tags.includes(t.id)));
+	let selectedTags = $state(data.allTags.filter((t): t is Tag => $formData.tags.includes(t.id)));
 
 	function onTagsChange(tagIds: string[]) {
-		formData.tags = tagIds;
-		selectedTags = data.allTags.filter((t: Tag) => tagIds.includes(t.id));
+		formData.update((f) => ({
+			...f,
+			tags: tagIds.map(Number)
+		}));
+		selectedTags = data.allTags.filter((t): t is Tag => tagIds.includes(t.id.toString()));
 	}
+
+	let selectedTagIds = $state($formData.tags.map((id) => String(id)));
 </script>
 
 {#if openTagDialog}
 	<CreateEditTagDialog
 		open={openTagDialog}
 		tags={data.allTags}
-		onClose={() => (openTagDialog = false)}
+		onClose={() => {
+			openTagDialog = false;
+		}}
+		onChange={(tags) => {
+			data.allTags = tags.filter((t): t is Tag => !!t.id && !!t.name) as Tag[];
+		}}
 	/>
 {/if}
 <section class="mx-auto w-full max-w-2xl flex-1 px-5 py-12 leading-6">
@@ -74,7 +84,12 @@
 		<ArrowLeft />
 		Blogs
 	</Button>
-	<ImageInputPlaceholder imageUrl={$formData.thumbnailUrl} onChange={handleThumbnailChange} />
+	<ImageInputPlaceholder
+		imageUrl={$formData.thumbnailUrl}
+		onChange={handleThumbnailChange}
+		title="Click to upload or drag and drop"
+		description="Maximum file size 5 MB"
+	/>
 	<form method="POST" use:enhance>
 		<div class="mt-4 flex flex-col gap-4">
 			<Label for="title">Title</Label>
@@ -110,7 +125,7 @@
 				<Select.Root
 					name="tags"
 					type="multiple"
-					bind:value={$formData.tags}
+					bind:value={selectedTagIds}
 					onValueChange={onTagsChange}
 				>
 					<Select.Trigger class="w-full border-dashed">
@@ -138,14 +153,18 @@
 			<div class="flex items-center gap-2">
 				<div class="size-8">
 					<Avatar.Root>
-						<Avatar.Image src="https://github.com/shadcn.png" alt="@shadcn" class="rounded-4xl" />
-						<Avatar.Fallback>CN</Avatar.Fallback>
+						<Avatar.Image
+							src={data.user.profilePictureUrl}
+							alt={data.user.name}
+							class="rounded-4xl"
+						/>
+						<Avatar.Fallback>{data.user.name[0].toUpperCase()}</Avatar.Fallback>
 					</Avatar.Root>
 				</div>
-				<!-- <p class="mt-0">Written by <b>{data.blog.author?.name}</b></p> -->
+				<p class="mt-0">Written by <b>{data.user.name}</b></p>
 			</div>
 			<p class="mt-0 font-bold">•</p>
-			<!-- <p class="text-muted-foreground mt-0">{publishedDate}</p> -->
+			<p class="text-muted-foreground mt-0">{publishedDate}</p>
 			<p class="mt-0 font-bold">•</p>
 			<div class="flex items-center">
 				<Clock class="stroke-muted-foreground size-4" />

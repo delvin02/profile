@@ -1,0 +1,13 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1753513083518,
+      "tag": "20250726065803_glorious_kulan_gath",
+      "breakpoints": true
+    }
+  ]
+}

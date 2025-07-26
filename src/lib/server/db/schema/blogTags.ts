@@ -1,19 +1,22 @@
-import { mysqlTable, primaryKey, bigint } from 'drizzle-orm/mysql-core';
-import { relations, type InferInsertModel, type InferSelectModel } from 'drizzle-orm';
+import { mysqlTable, timestamp, int, primaryKey } from 'drizzle-orm/mysql-core';
+import { relations, type InferSelectModel, type InferInsertModel } from 'drizzle-orm';
 import { blog } from './blog';
 import { tag } from './tag';
 
 export const blogTags = mysqlTable(
 	'blog_tags',
 	{
-		blogId: bigint('blog_id', { mode: 'number', unsigned: true })
+		blogId: int('blog_id')
 			.notNull()
 			.references(() => blog.id),
-		tagId: bigint('tag_id', { mode: 'number', unsigned: true })
+		tagId: int('tag_id')
 			.notNull()
-			.references(() => tag.id)
+			.references(() => tag.id),
+		createdAt: timestamp('created_at').defaultNow()
 	},
-	(t) => [primaryKey({ columns: [t.blogId, t.tagId] })]
+	(table) => ({
+		pk: primaryKey({ columns: [table.blogId, table.tagId] })
+	})
 );
 
 export const blogTagsRelations = relations(blogTags, ({ one }) => ({

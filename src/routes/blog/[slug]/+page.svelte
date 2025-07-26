@@ -71,11 +71,11 @@
 				<div class="size-8">
 					<Avatar.Root>
 						<Avatar.Image
-							src={env.PUBLIC_ADMIN_PROFILE_PICTURE_PATH}
-							alt="@shadcn"
+							src={data.user.profilePictureUrl}
+							alt={data.user.name}
 							class="rounded-4xl"
 						/>
-						<Avatar.Fallback>CN</Avatar.Fallback>
+						<Avatar.Fallback>{data.user.name[0].toUpperCase()}</Avatar.Fallback>
 					</Avatar.Root>
 				</div>
 				<p class="mt-0">Written by <b>{env.PUBLIC_ADMIN_NAME}</b></p>

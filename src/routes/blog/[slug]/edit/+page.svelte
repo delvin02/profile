@@ -16,6 +16,7 @@
 	import CreateEditTagDialog from '@/lib/components/CreateEditTagDialog.svelte';
 	import { invalidate } from '$app/navigation';
 	import { env } from '$env/dynamic/public';
+	import { page } from '$app/stores';
 
 	let { data } = $props();
 
@@ -58,14 +59,14 @@
 	}
 
 	let tagStringIds = $state($formData.tags.map(String));
-	let selectedTags = $state(data.allTags.filter((t: Tag) => $formData.tags.includes(t.id)));
+	let selectedTags = $state(data.allTags.filter((t): t is Tag => $formData.tags.includes(t.id)));
 
 	function onTagsChange(tagIds: string[]) {
 		formData.update((f) => ({
 			...f,
 			tags: tagIds.map(Number)
 		}));
-		selectedTags = data.allTags.filter((t: Tag) => tagIds.includes(t.id.toString()));
+		selectedTags = data.allTags.filter((t): t is Tag => tagIds.includes(t.id.toString()));
 	}
 </script>
 
@@ -81,9 +82,11 @@
 	<CreateEditTagDialog
 		open={openTagDialog}
 		tags={data.allTags}
-		onClose={async () => {
+		onClose={() => {
 			openTagDialog = false;
-			await invalidate('allTags');
+		}}
+		onChange={(tags) => {
+			data.allTags = tags.filter((t): t is Tag => !!t.id && !!t.name) as Tag[];
 		}}
 	/>
 {/if}
@@ -93,7 +96,12 @@
 		Blogs
 	</Button>
 	<div class="mt-4">
-		<ImageInputPlaceholder imageUrl={$formData.thumbnailUrl} onChange={handleThumbnailChange} />
+		<ImageInputPlaceholder
+			imageUrl={$formData.thumbnailUrl}
+			onChange={handleThumbnailChange}
+			title="Click to upload or drag and drop"
+			description="Maximum file size 5 MB"
+		/>
 	</div>
 	<form method="POST" use:enhance>
 		<div class="mt-4 flex flex-col gap-4">
@@ -169,14 +177,14 @@
 				<div class="size-8">
 					<Avatar.Root>
 						<Avatar.Image
-							src={env.PUBLIC_ADMIN_PROFILE_PICTURE_PATH}
-							alt="@shadcn"
+							src={data.user.profilePictureUrl}
+							alt={data.user.name}
 							class="rounded-4xl"
 						/>
-						<Avatar.Fallback>CN</Avatar.Fallback>
+						<Avatar.Fallback>{data.user.name[0].toUpperCase()}</Avatar.Fallback>
 					</Avatar.Root>
 				</div>
-				<!-- <p class="mt-0">Written by <b>{data.blog.author?.name}</b></p> -->
+				<p class="mt-0">Written by <b>{data.user?.name}</b></p>
 			</div>
 			<p class="mt-0 font-bold">•</p>
 			<p class="text-muted-foreground mt-0">{publishedDate}</p>

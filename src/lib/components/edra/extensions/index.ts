@@ -120,8 +120,8 @@ export const TIPTAP_EXTENSIONS: Extensions = [
 	}),
 	ImagePlaceholder(ImagePlaceholderComp),
 	ImageExtended(ImageExtendedComp),
-	VideoPlaceholder(VideoPlaceHolderComp),
-	VideoExtended(VideoExtendedComp),
+	// VideoPlaceholder(VideoPlaceHolderComp),
+	// VideoExtended(VideoExtendedComp),
 	SlashCommand,
 	EmojiExtension
 ];

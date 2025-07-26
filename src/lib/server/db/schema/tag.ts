@@ -1,17 +1,21 @@
-import { mysqlTable, serial, varchar, bigint } from 'drizzle-orm/mysql-core';
+import { mysqlTable, varchar, int } from 'drizzle-orm/mysql-core';
 import { relations, type InferSelectModel, type InferInsertModel } from 'drizzle-orm';
 import { blogTags } from './blogTags';
 import { user } from './user';
 
 export const tag = mysqlTable('tag', {
-	id: serial('id').primaryKey().autoincrement(),
+	id: int('id').primaryKey().autoincrement(),
 	name: varchar('name', { length: 100 }).notNull().unique(),
-	userId: bigint('user_id', { mode: 'number', unsigned: true })
+	userId: int('user_id')
 		.notNull()
 		.references(() => user.id)
 });
 
-export const tagRelations = relations(tag, ({ many }) => ({
+export const tagRelations = relations(tag, ({ one, many }) => ({
+	user: one(user, {
+		fields: [tag.userId],
+		references: [user.id]
+	}),
 	blogTags: many(blogTags)
 }));
 
