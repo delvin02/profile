@@ -1,4 +1,4 @@
-import { mysqlTable, timestamp, int, primaryKey } from 'drizzle-orm/mysql-core';
+import { mysqlTable, timestamp, int, primaryKey, unique } from 'drizzle-orm/mysql-core';
 import { relations, type InferSelectModel, type InferInsertModel } from 'drizzle-orm';
 import { blog } from './blog';
 import { tag } from './tag';
@@ -6,6 +6,7 @@ import { tag } from './tag';
 export const blogTags = mysqlTable(
 	'blog_tags',
 	{
+		id: int('id').primaryKey().autoincrement(),
 		blogId: int('blog_id')
 			.notNull()
 			.references(() => blog.id),
@@ -15,7 +16,7 @@ export const blogTags = mysqlTable(
 		createdAt: timestamp('created_at').defaultNow()
 	},
 	(table) => ({
-		pk: primaryKey({ columns: [table.blogId, table.tagId] })
+		unique: unique().on(table.blogId, table.tagId)
 	})
 );
 
