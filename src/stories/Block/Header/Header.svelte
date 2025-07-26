@@ -92,7 +92,7 @@
 						/>
 					</Button>
 
-					{#if user}
+					{#if user && isLoggedIn}
 						<form method="POST" action="/logout">
 							<Button variant="destructive" type="submit" class="cursor-pointer">Logout</Button>
 						</form>

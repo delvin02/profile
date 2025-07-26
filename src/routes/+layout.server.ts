@@ -5,6 +5,10 @@ import { user } from '@/lib/server/db/schema';
 import { error } from '@sveltejs/kit';
 
 export const load: LayoutServerLoad = async ({ locals }) => {
+	if (!locals.subdomain) {
+		throw error(400, 'Subdomain not found');
+	}
+
 	const currentUser = await db.query.user.findFirst({
 		columns: {
 			passwordHash: false
