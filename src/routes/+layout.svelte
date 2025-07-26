@@ -12,7 +12,7 @@
 <ModeWatcher />
 <Toaster position="top-center" richColors />
 <article class="flex min-h-screen flex-col">
-	<Header user={data.user} />
+	<Header user={data.user} {data.isLoggedIn} />
 	<main class="flex min-h-full flex-1 flex-col">
 		{@render children()}
 	</main>

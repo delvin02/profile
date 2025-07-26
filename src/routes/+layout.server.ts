@@ -16,5 +16,5 @@ export const load: LayoutServerLoad = async ({ locals }) => {
 		throw error(404, 'User not found');
 	}
 
-	return { user: currentUser };
+	return { user: currentUser, isLoggedIn: !!locals.auth };
 };

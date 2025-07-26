@@ -206,16 +206,6 @@
 				<input class="hidden" bind:value={$formData.bio} name="bio" />
 			</div>
 
-			<div class="mt-4">
-				<Label for="headline" class="mb-1">Headline</Label>
-				<input
-					bind:value={$formData.headline}
-					placeholder="Enter headline"
-					class="border-primary/80 font-futura block w-full border-b border-dashed text-center font-mono text-4xl leading-1
-			 font-semibold break-all whitespace-normal italic dark:text-white"
-					{...$constraints.name}
-				/>
-			</div>
 			<div class="mt-2 flex">
 				<Button type="submit" class="ml-auto">Update</Button>
 			</div>

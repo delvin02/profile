@@ -12,7 +12,7 @@
 		SheetTrigger
 	} from '@/lib/components/ui/sheet/index.js';
 
-	const { user } = $props();
+	const { user, isLoggedIn } = $props();
 </script>
 
 <header>
@@ -58,7 +58,7 @@
 									>Resume</a
 								>
 							</div>
-							{#if user}
+							{#if user && isLoggedIn}
 								<form method="POST" action="/logout">
 									<Button
 										variant="destructive"
