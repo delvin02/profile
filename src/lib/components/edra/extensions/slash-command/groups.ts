@@ -42,7 +42,7 @@ export const GROUPS: Group[] = [
 		title: 'Insert',
 		actions: [
 			...commands.media,
-			...commands.table,
+			// ...commands.table,
 			{
 				icon: Minus,
 				name: 'horizontalRule',

@@ -29,7 +29,6 @@ export const ImageExtended = (component: Component<NodeViewProps>): Node<ImageOp
 				class: {
 					default: null,
 					parseHTML: (element: HTMLElement) => {
-						console.log(element);
 						return element.getAttribute('class');
 					},
 

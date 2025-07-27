@@ -6,8 +6,8 @@ import { compare } from 'bcryptjs';
 import { db } from '$lib/server/db';
 import { user, type User } from '@/lib/server/db/schema';
 import { eq } from 'drizzle-orm';
-import { loginSchema } from './schema';
 import { createSession } from '@/lib/server/session';
+import { loginSchema } from './schema.js';
 
 export async function load({ locals }) {
 	if (locals.auth) {

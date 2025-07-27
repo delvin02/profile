@@ -386,25 +386,25 @@ const commands: Record<string, EdraToolBarCommands[]> = {
 		// 	},
 		// 	isActive: (editor) => editor.isActive('iframe-placeholder')
 		// }
-	],
-	table: [
-		{
-			icon: Table,
-			name: 'table',
-			tooltip: 'Table',
-			onClick: (editor) => {
-				if (editor.isActive('table')) {
-					const del = confirm('Do you really want to delete this table??');
-					if (del) {
-						editor.chain().focus().deleteTable().run();
-						return;
-					}
-				}
-				editor.chain().focus().insertTable({ cols: 3, rows: 3, withHeaderRow: false }).run();
-			},
-			isActive: (editor) => editor.isActive('table')
-		}
 	]
+	// table: [
+	// 	{
+	// 		icon: Table,
+	// 		name: 'table',
+	// 		tooltip: 'Table',
+	// 		onClick: (editor) => {
+	// 			if (editor.isActive('table')) {
+	// 				const del = confirm('Do you really want to delete this table??');
+	// 				if (del) {
+	// 					editor.chain().focus().deleteTable().run();
+	// 					return;
+	// 				}
+	// 			}
+	// 			editor.chain().focus().insertTable({ cols: 3, rows: 3, withHeaderRow: false }).run();
+	// 		},
+	// 		isActive: (editor) => editor.isActive('table')
+	// 	}
+	// ]
 };
 
 export default commands;

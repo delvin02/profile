@@ -15,6 +15,7 @@ export const user = mysqlTable('user', {
 	linkedInUrl: varchar('linkedin_url', { length: 255 }),
 	resumeUrl: varchar('resume_url', { length: 255 }),
 	bio: json('bio'),
+	googleTagId: varchar('google_tag_id', { length: 256 }),
 	...timestamps
 });
 

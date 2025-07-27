@@ -73,7 +73,6 @@
 	onclick={(event) => focusEditor(editor, event)}
 	onkeydown={(event) => {
 		if (event.key === 'Enter' || event.key === ' ') {
-			console.log('enter');
 			focusEditor(editor, event);
 		}
 	}}

@@ -1,13 +1,12 @@
 import { error, fail, redirect, type Actions } from '@sveltejs/kit';
 import { db } from '$lib/server/db';
 import { eq } from 'drizzle-orm';
-import { updateUserSchema } from './schema.js';
+import { updateUserSchema } from './schema';
 import { zod4 } from 'sveltekit-superforms/adapters';
 import { superValidate } from 'sveltekit-superforms';
-import type { PageServerLoad } from './$types.js';
 import { user } from '@/lib/server/db/schema/user.js';
 
-export const load: PageServerLoad = async ({ locals }) => {
+export const load = async ({ locals }) => {
 	if (!locals.auth) {
 		throw redirect(302, '/login');
 	}

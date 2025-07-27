@@ -203,7 +203,7 @@
 		</div>
 
 		<div class="mt-2 flex">
-			<Button type="submit" class="ml-auto">Update</Button>
+			<Button type="submit" class="ml-auto cursor-pointer">Update</Button>
 		</div>
 	</form>
 </section>

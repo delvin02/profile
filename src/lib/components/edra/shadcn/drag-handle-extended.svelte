@@ -96,7 +96,7 @@
 			</DropdownMenu.Item>
 			<DropdownMenu.Item onclick={handleDuplicate}>
 				<Duplicate />
-				Duplicate Node
+				Duplicate
 			</DropdownMenu.Item>
 			<DropdownMenu.Item onclick={handleCopyToClipboard}>
 				<Clipboard />

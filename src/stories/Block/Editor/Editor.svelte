@@ -29,7 +29,7 @@
 	{#if editor && !editor.isDestroyed}
 		<div class="sticky top-0 z-50">
 			<EdraToolBar
-				class="bg-secondary scrollbar-thin flex w-full  max-w-full flex-nowrap items-center justify-center overflow-x-auto border-b border-dashed p-0.5 whitespace-nowrap"
+				class="bg-secondary scrollbar-thin flex w-full  max-w-full flex-nowrap items-center justify-start overflow-x-auto border-b border-dashed p-0.5 whitespace-nowrap"
 				{editor}
 			/>
 			<EdraDragHandleExtended {editor} />

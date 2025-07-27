@@ -3,7 +3,6 @@
 	import { type Editor } from '@tiptap/core';
 	import ArrowLeftFromLine from '@lucide/svelte/icons/arrow-left-from-line';
 	import ArrowRightFromLine from '@lucide/svelte/icons/arrow-right-from-line';
-
 	import Trash from '@lucide/svelte/icons/trash';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { isColumnGripSelected } from '../../extensions/table/utils.js';
