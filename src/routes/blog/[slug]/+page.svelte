@@ -7,14 +7,16 @@
 	import { generateHTML, type JSONContent } from '@tiptap/core';
 	import { TIPTAP_EXTENSIONS } from '@/lib/components/edra/extensions';
 	import Loading from '@/stories/Block/Loading/Loading.svelte';
-	import { env } from '$env/dynamic/public';
+	import { DateFormatter } from '@internationalized/date';
+	import { userStore } from '@/lib/stores/userStore';
 
 	let { data } = $props();
+	const { user, isLoggedIn } = userStore;
 
 	let htmlContent = $state();
 	let loading: boolean = $state(true);
 
-	const publishedDate = new Date(data.blog.createdAt).toLocaleDateString(undefined, {
+	const publishedDate = new DateFormatter('en-US', {
 		year: 'numeric',
 		month: 'short',
 		day: 'numeric'
@@ -68,25 +70,25 @@
 
 		<div class="mt-8 flex flex-row items-center gap-2 text-sm">
 			<div class="flex items-center gap-2">
-				<div class="size-8">
+				<div class="flex size-8 items-center justify-center rounded-4xl bg-gray-200">
 					<Avatar.Root>
-						<Avatar.Image
-							src={data.user.profilePictureUrl}
-							alt={data.user.name}
-							class="rounded-4xl"
-						/>
+						<Avatar.Image src={$user.profilePictureUrl} alt={$user.name} class="rounded-4xl" />
 						<Avatar.Fallback>{data.user.name[0].toUpperCase()}</Avatar.Fallback>
 					</Avatar.Root>
 				</div>
-				<p class="mt-0">Written by <b>{env.PUBLIC_ADMIN_NAME}</b></p>
+				<p class="mt-0">Written by <b>{$user.name}</b></p>
 			</div>
-			<p class="mt-0 font-bold">•</p>
-			<p class="text-muted-foreground mt-0">{publishedDate}</p>
-			<p class="mt-0 font-bold">•</p>
-			<div class="flex items-center">
-				<Clock class="stroke-muted-foreground size-4" />
-				<p class="text-muted-foreground mt-0 pl-1">1 min.</p>
-			</div>
+			{#if data.blog.publishedAt}
+				<p class="mt-0 font-bold">•</p>
+				<p class="text-muted-foreground mt-0">{publishedDate.format(data.blog.publishedAt)}</p>
+			{/if}
+			{#if data.blog.readingTime}
+				<p class="mt-0 font-bold">•</p>
+				<div class="flex items-center">
+					<Clock class="stroke-muted-foreground size-4" />
+					<p class="text-muted-foreground mt-0 pl-1">{data.blog.readingTime} min.</p>
+				</div>
+			{/if}
 		</div>
 
 		<div class="mt-8">

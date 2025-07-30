@@ -1,10 +1,10 @@
 import type { Actions } from '@sveltejs/kit';
-import { error, fail, redirect } from '@sveltejs/kit';
-import { message, setError, superValidate } from 'sveltekit-superforms/server';
+import { fail, redirect } from '@sveltejs/kit';
+import { message, superValidate } from 'sveltekit-superforms/server';
 import { zod4 } from 'sveltekit-superforms/adapters';
 import { compare } from 'bcryptjs';
 import { db } from '$lib/server/db';
-import { user, type User } from '@/lib/server/db/schema';
+import { user } from '@/lib/server/db/schema';
 import { eq } from 'drizzle-orm';
 import { createSession } from '@/lib/server/session';
 import { loginSchema } from './schema.js';

@@ -33,7 +33,7 @@ export const actions: Actions = {
 			return { form };
 		}
 
-		const { title, description, content, thumbnailUrl, tags } = form.data;
+		const { title, description, content, thumbnailUrl, tags, publishedAt, readingTime } = form.data;
 
 		const slug = slugify(title);
 		const newBlog: NewBlog = {
@@ -42,13 +42,15 @@ export const actions: Actions = {
 			description,
 			thumbnailUrl,
 			slug,
-			content
+			content,
+			publishedAt: publishedAt ? new Date(publishedAt) : null,
+			readingTime
 		};
 
 		const [inserted] = await db.insert(blog).values(newBlog).$returningId();
 
 		if (!inserted) {
-			throw error(500, 'Failed to create blog');
+			throw error(400, 'Failed to create blog');
 		}
 
 		if (tags.length) {

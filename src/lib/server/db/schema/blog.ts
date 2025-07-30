@@ -1,4 +1,4 @@
-import { mysqlTable, varchar, json, bigint, text, int } from 'drizzle-orm/mysql-core';
+import { mysqlTable, varchar, json, text, int, timestamp } from 'drizzle-orm/mysql-core';
 import { relations, type InferInsertModel, type InferSelectModel } from 'drizzle-orm';
 import { timestamps } from '../columns.helper';
 import { blogTags } from './blogTags';
@@ -14,6 +14,8 @@ export const blog = mysqlTable('blog', {
 	slug: varchar('slug', { length: 256 }).notNull().unique(),
 	description: text('description').notNull(),
 	content: json('content'),
+	publishedAt: timestamp('published_at'),
+	readingTime: int('reading_time'),
 	...timestamps
 });
 

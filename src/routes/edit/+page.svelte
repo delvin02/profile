@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Button from '@/lib/components/ui/button/button.svelte';
 	import Label from '@/lib/components/ui/label/label.svelte';
-	import { superForm } from 'sveltekit-superforms';
+	import SuperDebug, { superForm } from 'sveltekit-superforms';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 	import type { Content } from '@tiptap/core';
 	import { Input } from '@/lib/components/ui/input';
@@ -67,11 +67,11 @@
 			URL.revokeObjectURL(objectUrl);
 
 			const form = new FormData();
-			form.append('image', file);
+			form.append('file', file);
 
 			let res: Response;
 			try {
-				res = await fetch('/api/image', {
+				res = await fetch('/api/file', {
 					method: 'POST',
 					body: form
 				});
@@ -105,7 +105,7 @@
 			return;
 		}
 
-		await fetch('/api/image', {
+		await fetch('/api/file', {
 			method: 'DELETE',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ url: $formData.profilePictureUrl })
@@ -129,6 +129,12 @@
 	<title>{data.user.name.toUpperCase()}</title>
 </svelte:head>
 
+<!-- <SuperDebug
+	data={{
+		form: $formData,
+		errors: $errors
+	}}
+/> -->
 <section class="mx-auto max-w-2xl flex-1 px-5 pt-12 leading-6">
 	<div class="flex flex-col gap-4">
 		<form method="POST" use:enhance>

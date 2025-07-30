@@ -60,11 +60,11 @@
 			}
 
 			const form = new FormData();
-			form.append('image', file);
+			form.append('file', file);
 
 			let res: Response;
 			try {
-				res = await fetch('/api/image', {
+				res = await fetch('/api/file', {
 					method: 'POST',
 					body: form
 				});
@@ -95,7 +95,7 @@
 			return;
 		}
 
-		await fetch('/api/image', {
+		await fetch('/api/file', {
 			method: 'DELETE',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ url: imageUrl })

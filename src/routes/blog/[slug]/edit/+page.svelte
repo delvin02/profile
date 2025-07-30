@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Button from '@/lib/components/ui/button/button.svelte';
 	import ArrowLeft from '@lucide/svelte/icons/arrow-left';
+	import CalendarIcon from '@lucide/svelte/icons/calendar';
 	import Clock from '@lucide/svelte/icons/clock';
 	import { Avatar } from 'bits-ui';
 	import { type Content } from '@tiptap/core';
@@ -14,8 +15,14 @@
 	import type { Tag } from '@/lib/server/db/schema/tag';
 	import Badge from '@/lib/components/ui/badge/badge.svelte';
 	import CreateEditTagDialog from '@/lib/components/CreateEditTagDialog.svelte';
-	import { invalidate } from '$app/navigation';
-	import { env } from '$env/dynamic/public';
+	import {
+		DateFormatter,
+		getLocalTimeZone,
+		parseDate,
+		toCalendarDate
+	} from '@internationalized/date';
+	import { Calendar } from '$lib/components/ui/calendar/index.js';
+	import * as Popover from '$lib/components/ui/popover/index.js';
 	import { page } from '$app/stores';
 
 	let { data } = $props();
@@ -36,11 +43,15 @@
 		}
 	});
 
-	const publishedDate = new Date(data.blog.createdAt).toLocaleDateString(undefined, {
+	const publishedDate = new DateFormatter('en-US', {
 		year: 'numeric',
 		month: 'short',
 		day: 'numeric'
 	});
+
+	let publishedAtValue = $derived(
+		$formData.publishedAt ? parseDate($formData.publishedAt.toISOString().slice(0, 10)) : undefined
+	);
 
 	let content: Content = $state(data.blog.content as Content);
 
@@ -104,6 +115,8 @@
 		/>
 	</div>
 	<form method="POST" use:enhance>
+		<input type="hidden" name="id" value={data.blog.id} />
+
 		<div class="mt-4 flex flex-col gap-4">
 			<Label for="title">Title</Label>
 			<input
@@ -174,8 +187,8 @@
 
 		<div class="mt-8 flex flex-row items-center gap-2 text-sm">
 			<div class="flex items-center gap-2">
-				<div class="size-8">
-					<Avatar.Root>
+				<div class="flex size-8 items-center justify-center rounded-4xl bg-gray-200">
+					<Avatar.Root class="my-auto">
 						<Avatar.Image
 							src={data.user.profilePictureUrl}
 							alt={data.user.name}
@@ -184,14 +197,52 @@
 						<Avatar.Fallback>{data.user.name[0].toUpperCase()}</Avatar.Fallback>
 					</Avatar.Root>
 				</div>
-				<p class="mt-0">Written by <b>{data.user?.name}</b></p>
+				<p class="mt-0">Written by <b>{data.user.name}</b></p>
 			</div>
 			<p class="mt-0 font-bold">•</p>
-			<p class="text-muted-foreground mt-0">{publishedDate}</p>
+			<p class="text-muted-foreground mt-0">
+				<Popover.Root>
+					<Popover.Trigger class="border-primary/80 rounded-none border-b border-dashed py-0">
+						{#snippet child({ props })}
+							<Button
+								variant="ghost"
+								class="w-fit justify-start rounded-none text-left font-normal"
+								{...props}
+							>
+								<CalendarIcon class="mr-2 size-4" />
+								{publishedAtValue
+									? publishedDate.format(publishedAtValue.toDate(getLocalTimeZone()))
+									: 'Date'}
+							</Button>
+						{/snippet}
+					</Popover.Trigger>
+					<Popover.Content class="w-auto p-0">
+						<Calendar
+							bind:value={publishedAtValue}
+							type="single"
+							initialFocus
+							onValueChange={(v) => {
+								if (v) {
+									$formData.publishedAt = v.toDate('utc');
+								} else {
+									$formData.publishedAt = null;
+								}
+							}}
+						/>
+					</Popover.Content>
+				</Popover.Root>
+			</p>
 			<p class="mt-0 font-bold">•</p>
 			<div class="flex items-center">
 				<Clock class="stroke-muted-foreground size-4" />
-				<p class="text-muted-foreground mt-0 pl-1">1 min.</p>
+				<input
+					class="text-muted-foreground border-primary/80 my-0 max-w-8 border-b border-dashed text-center"
+					bind:value={$formData.readingTime}
+					name="readingTime"
+					placeholder="1"
+					{...$constraints.readingTime}
+				/>
+				<p class="text-muted-foreground mt-0 pl-1">min.</p>
 			</div>
 		</div>
 		<div class="mt-8">
@@ -203,7 +254,10 @@
 		</div>
 
 		<div class="mt-2 flex">
-			<Button type="submit" class="ml-auto cursor-pointer">Update</Button>
+			<Button type="submit" class="cursor-pointer" formaction="?/archive" variant="destructive">
+				Archive
+			</Button>
+			<Button type="submit" class="ml-auto cursor-pointer" formaction="?/update">Update</Button>
 		</div>
 	</form>
 </section>

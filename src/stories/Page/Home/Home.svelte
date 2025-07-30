@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
 	import { ModeWatcher } from 'mode-watcher';
 	import Header from '../../Block/Header/Header.svelte';
 	import './home.css';
@@ -62,4 +62,4 @@
 		</div>
 	</section>
 	<Footer />
-</article>
+</article> -->

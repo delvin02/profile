@@ -9,19 +9,17 @@
 	let fileInput: HTMLInputElement;
 
 	async function handleFile(file: File) {
-		console.log('handle file');
-
 		if (file.size > 5 * 1024 * 1024) {
 			toast.error('File too big (max 5 MB)');
 			return;
 		}
 
 		const form = new FormData();
-		form.append('image', file);
+		form.append('file', file);
 		let res: Response;
 
 		try {
-			res = await fetch('/api/image', { method: 'POST', body: form });
+			res = await fetch('/api/file', { method: 'POST', body: form });
 		} catch (err) {
 			toast.error('Upload failed');
 			return;

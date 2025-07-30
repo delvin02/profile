@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Button from '@/lib/components/ui/button/button.svelte';
 	import ArrowLeft from '@lucide/svelte/icons/arrow-left';
+	import CalendarIcon from '@lucide/svelte/icons/calendar';
 	import Clock from '@lucide/svelte/icons/clock';
 	import { Avatar } from 'bits-ui';
 	import { type Content } from '@tiptap/core';
@@ -11,9 +12,12 @@
 	import ImageInputPlaceholder from '@/lib/components/ImageInputPlaceholder.svelte';
 	import * as Select from '$lib/components/ui/select/index.js';
 	import type { Tag } from '@/lib/server/db/schema/tag';
+	import Badge from '@/lib/components/ui/badge/badge.svelte';
 	import CreateEditTagDialog from '@/lib/components/CreateEditTagDialog.svelte';
 	import { createBlogSchema } from './schema';
-	import { invalidate } from '$app/navigation';
+	import { DateFormatter, getLocalTimeZone, parseDate } from '@internationalized/date';
+	import { Calendar } from '$lib/components/ui/calendar/index.js';
+	import * as Popover from '$lib/components/ui/popover/index.js';
 
 	let { data } = $props();
 
@@ -32,12 +36,15 @@
 		}
 	});
 
-	const publishedDate = new Date().toLocaleDateString(undefined, {
+	const publishedDate = new DateFormatter('en-US', {
 		year: 'numeric',
 		month: 'short',
 		day: 'numeric'
 	});
 
+	let publishedAtValue = $derived(
+		$formData.publishedAt ? parseDate($formData.publishedAt) : undefined
+	);
 	let content: Content = $state($formData.content as Content);
 
 	function handleContentUpdate(newContent: Content) {
@@ -54,6 +61,7 @@
 		}));
 	}
 
+	let selectedTagIds = $state($formData.tags.map(String));
 	let selectedTags = $state(data.allTags.filter((t): t is Tag => $formData.tags.includes(t.id)));
 
 	function onTagsChange(tagIds: string[]) {
@@ -63,8 +71,6 @@
 		}));
 		selectedTags = data.allTags.filter((t): t is Tag => tagIds.includes(t.id.toString()));
 	}
-
-	let selectedTagIds = $state($formData.tags.map((id) => String(id)));
 </script>
 
 {#if openTagDialog}
@@ -79,6 +85,12 @@
 		}}
 	/>
 {/if}
+<!-- <SuperDebug
+	data={{
+		form: $formData,
+		errors: $errors
+	}}
+/> -->
 <section class="mx-auto w-full max-w-2xl flex-1 px-5 py-12 leading-6">
 	<Button variant="link" href="/blog">
 		<ArrowLeft />
@@ -129,7 +141,17 @@
 					onValueChange={onTagsChange}
 				>
 					<Select.Trigger class="w-full border-dashed">
-						<div class="flex gap-2">Select tag(s)</div>
+						<div class="flex gap-2">
+							{#if selectedTags.length}
+								{#each selectedTags as tag}
+									<Badge variant="secondary" class="font-mono font-semibold uppercase"
+										>{tag.name}</Badge
+									>
+								{/each}
+							{:else}
+								Select tag(s)
+							{/if}
+						</div>
 					</Select.Trigger>
 					<Select.Content>
 						{#each data.allTags as tag}
@@ -151,8 +173,8 @@
 
 		<div class="mt-8 flex flex-row items-center gap-2 text-sm">
 			<div class="flex items-center gap-2">
-				<div class="size-8">
-					<Avatar.Root>
+				<div class="flex size-8 items-center justify-center rounded-4xl">
+					<Avatar.Root class="my-auto">
 						<Avatar.Image
 							src={data.user.profilePictureUrl}
 							alt={data.user.name}
@@ -164,11 +186,49 @@
 				<p class="mt-0">Written by <b>{data.user.name}</b></p>
 			</div>
 			<p class="mt-0 font-bold">•</p>
-			<p class="text-muted-foreground mt-0">{publishedDate}</p>
+			<p class="text-muted-foreground mt-0">
+				<Popover.Root>
+					<Popover.Trigger class="border-primary/80 rounded-none border-b border-dashed">
+						{#snippet child({ props })}
+							<Button
+								variant="ghost"
+								class="w-fit justify-start rounded-none text-left font-normal"
+								{...props}
+							>
+								<CalendarIcon class="mr-2 size-4" />
+								{publishedAtValue
+									? publishedDate.format(publishedAtValue.toDate(getLocalTimeZone()))
+									: 'Date'}
+							</Button>
+						{/snippet}
+					</Popover.Trigger>
+					<Popover.Content class="w-auto p-0">
+						<Calendar
+							bind:value={publishedAtValue}
+							type="single"
+							initialFocus
+							onValueChange={(v) => {
+								if (v) {
+									$formData.publishedAt = v.toString();
+								} else {
+									$formData.publishedAt = '';
+								}
+							}}
+						/>
+					</Popover.Content>
+				</Popover.Root>
+			</p>
 			<p class="mt-0 font-bold">•</p>
 			<div class="flex items-center">
 				<Clock class="stroke-muted-foreground size-4" />
-				<p class="text-muted-foreground mt-0 pl-1">1 min.</p>
+				<input
+					class="text-muted-foreground border-primary/80 my-0 max-w-8 border-b border-dashed text-center"
+					bind:value={$formData.readingTime}
+					name="readingTime"
+					placeholder="1"
+					{...$constraints.readingTime}
+				/>
+				<p class="text-muted-foreground mt-0 pl-1">min.</p>
 			</div>
 		</div>
 		<div class="mt-8">

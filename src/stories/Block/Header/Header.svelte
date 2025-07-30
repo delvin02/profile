@@ -11,13 +11,14 @@
 		SheetOverlay,
 		SheetTrigger
 	} from '@/lib/components/ui/sheet/index.js';
+	import { userStore } from '$lib/stores/userStore';
 
-	const { user, isLoggedIn } = $props();
+	const { user, isLoggedIn } = userStore;
 </script>
 
 <header>
 	<div class="flex items-center justify-between bg-white px-5 py-4 dark:bg-gray-900">
-		<h1 class="text-2xl"><a href="/">{user.name.toUpperCase()}</a></h1>
+		<h1 class="text-2xl"><a href="/">{$user.name.toUpperCase()}</a></h1>
 		<div class="flex flex-row gap-4">
 			<nav class="flex items-center justify-between">
 				<div class="md:hidden">
@@ -54,19 +55,21 @@
 								<a href="/blog" class="rounded px-2 py-1 text-2xl font-medium transition-all"
 									>Blog</a
 								>
-								<a href="/resume.pdf" class="rounded px-2 py-1 text-2xl font-medium transition-all"
-									>Resume</a
-								>
+								{#if $user.resumeUrl}
+									<a
+										href={$user.resumeUrl}
+										class="rounded px-2 py-1 text-2xl font-medium transition-all">Resume</a
+									>
+								{/if}
 							</div>
 							{#if user && isLoggedIn}
-								<form method="POST" action="/logout">
-									<Button
-										variant="destructive"
-										type="submit"
-										class="cursor-pointer rounded px-2 py-1 text-2xl font-medium transition-all"
-										>Logout</Button
+								<div class="flex flex-col justify-start gap-4">
+									<Button variant="default" class="cursor-pointer" href="/settings">Settings</Button
 									>
-								</form>
+									<form method="POST" action="/logout">
+										<Button variant="destructive" type="submit">Logout</Button>
+									</form>
+								</div>
 							{/if}
 						</SheetContent>
 					</Sheet>
@@ -75,8 +78,9 @@
 				<!-- DESKTOP: Inline nav + theme toggle -->
 				<div class="hidden items-center gap-4 md:flex">
 					<Button size="sm" variant="ghost" href="/blog">Blog</Button>
-					<Button size="sm" variant="ghost" href="/resume.pdf">Resume</Button>
-
+					{#if $user.resumeUrl}
+						<Button size="sm" variant="ghost" href={$user.resumeUrl}>Resume</Button>
+					{/if}
 					<Button
 						onclick={toggleMode}
 						variant="outline"
@@ -93,6 +97,7 @@
 					</Button>
 
 					{#if user && isLoggedIn}
+						<Button variant="default" class="cursor-pointer" href="/settings">Settings</Button>
 						<form method="POST" action="/logout">
 							<Button variant="destructive" type="submit" class="cursor-pointer">Logout</Button>
 						</form>

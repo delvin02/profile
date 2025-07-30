@@ -1,6 +1,6 @@
 import { error, redirect, type Actions } from '@sveltejs/kit';
 import { db } from '$lib/server/db';
-import { blog } from '$lib/server/db/schema/blog';
+import { blog, type Blog } from '$lib/server/db/schema/blog';
 import { eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
@@ -28,7 +28,9 @@ export async function load({ params, locals }) {
 			thumbnailUrl: blog.thumbnailUrl,
 			content: blog.content,
 			createdAt: blog.createdAt,
-			updatedAt: blog.updatedAt
+			updatedAt: blog.updatedAt,
+			publishedAt: blog.publishedAt,
+			readingTime: blog.readingTime
 		})
 		.from(blog)
 		.where(eq(blog.slug, slug))
@@ -62,24 +64,25 @@ export async function load({ params, locals }) {
 }
 
 export const actions: Actions = {
-	default: async ({ params, request }) => {
+	update: async ({ params, request }) => {
 		const form = await superValidate(request, zod4(schema));
 		if (!form.valid) {
 			return { form };
 		}
 
-		const { id, thumbnailUrl, title, description, content, tags } = form.data;
+		const { id, thumbnailUrl, title, description, content, tags, publishedAt, readingTime } =
+			form.data;
 
-		await db
-			.update(blog)
-			.set({
-				title,
-				description,
-				content,
-				thumbnailUrl
-			})
-			.where(eq(blog.id, id));
+		const newBlog: Partial<Blog> = {
+			title,
+			description,
+			thumbnailUrl,
+			content,
+			publishedAt: publishedAt ? new Date(publishedAt) : null,
+			readingTime
+		};
 
+		await db.update(blog).set(newBlog).where(eq(blog.id, id));
 		await db.delete(blogTags).where(eq(blogTags.blogId, id));
 
 		if (tags.length) {
@@ -88,5 +91,25 @@ export const actions: Actions = {
 		}
 
 		redirect(303, `/blog/${params.slug}`);
+	},
+	archive: async ({ request, locals }) => {
+		if (!locals.auth) {
+			throw redirect(302, '/login');
+		}
+
+		const form = await superValidate(request, zod4(schema));
+		const { id } = form.data;
+
+		if (!locals.auth) throw redirect(302, '/login');
+
+		const now = new Date();
+
+		const result = await db.update(blog).set({ deletedAt: now }).where(eq(blog.id, id));
+		console.log(result);
+		if (!result) {
+			throw error(400, 'Failed to archive blog');
+		}
+
+		redirect(303, `/blog`);
 	}
 };
