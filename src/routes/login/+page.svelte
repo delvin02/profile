@@ -7,6 +7,8 @@
 	import Label from '@/lib/components/ui/label/label.svelte';
 	import Input from '@/lib/components/ui/input/input.svelte';
 	import Button from '@/lib/components/ui/button/button.svelte';
+	import { userStore } from '@/lib/stores/userStore.js';
+	import { goto } from '$app/navigation';
 	let { data } = $props();
 
 	let error: string | null = $state('');
@@ -21,6 +23,11 @@
 		dataType: 'json',
 		onSubmit({ jsonData }) {
 			jsonData($formData);
+		},
+		onResult: async ({ result }) => {
+			if (result.type === 'success') {
+				userStore.refreshUser().then(() => goto('/'));
+			}
 		}
 	});
 </script>

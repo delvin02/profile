@@ -28,8 +28,9 @@
 		},
 		onResult: async ({ result }) => {
 			if (result.type === 'success') {
-				userStore.refreshUser().then(() => goto('/blog'));
 				toast.success('Profile updated');
+				themeStore.set($formData.theme);
+				userStore.refreshUser().then(() => goto('/'));
 			}
 		}
 	});
@@ -56,8 +57,8 @@
 				</div>
 				<div>
 					<Label for="title">Resume Attachment</Label>
+					fileUrl={$formData.resumeUrl}
 					<FileInputPlaceholder
-						fileUrl={$formData.resumeUrl}
 						icon={Upload}
 						title="Click to upload or drag and drop"
 						onChange={(url) => {

@@ -48,7 +48,6 @@ export const actions: Actions = {
 			secure: process.env.NODE_ENV === 'production',
 			maxAge: 60 * 60 * 24 * 7
 		});
-
-		throw redirect(303, '/');
+		return { form };
 	}
 };

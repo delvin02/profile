@@ -1,5 +1,7 @@
 <script lang="ts">
-	import { Trash, type Icon, SquareArrowOutUpRight } from '@lucide/svelte';
+	import { Trash } from '@lucide/svelte/icons/trash';
+	import { SquareArrowOutUpRight } from '@lucide/svelte/icons/square-arrow-out-up-right';
+	import { type Icon } from '@lucide/svelte';
 	import { toast } from 'svelte-sonner';
 	import { cn } from '../utils';
 	import { userStore } from '../stores/userStore';
