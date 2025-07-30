@@ -11,51 +11,31 @@
 
 	let previousStyles: HTMLStyleElement | null = null;
 
-	onMount(() => {
-		themeStore.set(data.user.theme);
-
-		const unsubscribe = themeStore.subscribe(async (theme) => {
-			if (previousStyles) {
-				previousStyles.remove();
-				previousStyles = null;
-			}
-
-			switch (theme) {
-				case 'claude': {
-					const mod = await import('../theme/claude.css?inline');
-					previousStyles = injectStyle(mod.default);
-					break;
-				}
-				case 'mono': {
-					const mod = await import('../theme/mono.css?inline');
-					previousStyles = injectStyle(mod.default);
-					break;
-				}
-				case 'modern-minimal': {
-					const mod = await import('../theme/modern-minimal.css?inline');
-					previousStyles = injectStyle(mod.default);
-					break;
-				}
-				default:
-					const mod = await import('../theme/default.css?inline');
-					previousStyles = injectStyle(mod.default);
-					break;
-			}
-		});
-		onDestroy(unsubscribe);
-	});
-
-	function injectStyle(css: string) {
-		const styleEl = document.createElement('style');
-		styleEl.innerHTML = css;
-		document.head.appendChild(styleEl);
-		return styleEl;
-	}
-
 	let { children, data } = $props();
+
+	onMount(async () => {
+		switch (data.user.theme) {
+			case 'claude': {
+				await import('../theme/claude.css');
+				break;
+			}
+			case 'mono': {
+				await import('../theme/mono.css');
+				break;
+			}
+			case 'modern-minimal': {
+				await import('../theme/modern-minimal.css');
+				break;
+			}
+			default:
+				await import('../theme/default.css');
+				break;
+		}
+	});
 
 	userStore.setUser(data.user);
 	userStore.setIsLoggedIn(data.isLoggedIn);
+	themeStore.set(data.user.theme);
 </script>
 
 <ModeWatcher />

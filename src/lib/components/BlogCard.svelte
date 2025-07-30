@@ -57,7 +57,7 @@
 			{/each}
 		</Card.Footer>
 	{/if}
-	{#if isLoggedIn}
+	{#if $isLoggedIn}
 		<Separator />
 		<Card.Footer class="flex gap-2">
 			<p>Status:</p>

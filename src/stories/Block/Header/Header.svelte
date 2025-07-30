@@ -62,7 +62,7 @@
 									>
 								{/if}
 							</div>
-							{#if user && isLoggedIn}
+							{#if $user && $isLoggedIn}
 								<div class="flex flex-col justify-start gap-4">
 									<Button variant="default" class="cursor-pointer" href="/settings">Settings</Button
 									>
@@ -96,7 +96,7 @@
 						/>
 					</Button>
 
-					{#if user && isLoggedIn}
+					{#if $user && $isLoggedIn}
 						<Button variant="default" class="cursor-pointer" href="/settings">Settings</Button>
 						<form method="POST" action="/logout">
 							<Button variant="destructive" type="submit" class="cursor-pointer">Logout</Button>
