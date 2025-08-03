@@ -14,6 +14,11 @@
 	import { userStore } from '$lib/stores/userStore';
 
 	const { user, isLoggedIn } = userStore;
+
+	let isOpen = $state(false);
+	function closeMenu() {
+		isOpen = false;
+	}
 </script>
 
 <header>
@@ -36,11 +41,11 @@
 							class="absolute h-5 w-5 scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0"
 						/>
 					</Button>
-					<Sheet>
+					<Sheet bind:open={isOpen}>
 						<SheetTrigger>
 							<Button variant="ghost" size="icon" aria-label="Open menu">
 								<Menu
-									class="stroke-primary h-5 w-5 scale-100 rotate-0 transition-all dark:stroke-white "
+									class="stroke-primary h-5 w-5 scale-100 rotate-0 transition-all dark:stroke-white"
 								/>
 							</Button>
 						</SheetTrigger>
@@ -52,11 +57,14 @@
 							class="flex h-full w-1/2 items-center justify-center bg-white/90 dark:bg-gray-800/90"
 						>
 							<div class="mt-4 flex flex-col gap-3 space-y-2">
-								<a href="/blog" class="rounded px-2 py-1 text-2xl font-medium transition-all"
-									>Blog</a
+								<a
+									href="/blog"
+									onclick={closeMenu}
+									class="rounded px-2 py-1 text-2xl font-medium transition-all">Blog</a
 								>
 								{#if $user.resumeUrl}
 									<a
+										onclick={closeMenu}
 										href={$user.resumeUrl}
 										class="rounded px-2 py-1 text-2xl font-medium transition-all">Resume</a
 									>
@@ -64,12 +72,18 @@
 							</div>
 							{#if $user && $isLoggedIn}
 								<div class="flex flex-col justify-start gap-4">
-									<Button variant="default" class="w-full cursor-pointer" href="/settings"
-										>Settings</Button
+									<Button
+										variant="default"
+										onclick={closeMenu}
+										class="w-full cursor-pointer"
+										href="/settings">Settings</Button
 									>
 									<form method="POST" action="/logout">
-										<Button variant="destructive" class="w-full cursor-pointer" type="submit"
-											>Logout</Button
+										<Button
+											variant="destructive"
+											onclick={closeMenu}
+											class="w-full cursor-pointer"
+											type="submit">Logout</Button
 										>
 									</form>
 								</div>
