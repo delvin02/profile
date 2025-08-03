@@ -25,7 +25,7 @@
 			{/if}
 		</div>
 		<div class="my-2 flex flex-row justify-center dark:text-white">
-			<p class="text-primary font-bold">{$user.name.toUpperCase()}</p>
+			<p class="text-primary font-bold">{$user.name.toUpperCase() + ' '}</p>
 			{' '}
 			<p class="ml-1 text-center">&#169; {year}</p>
 		</div>

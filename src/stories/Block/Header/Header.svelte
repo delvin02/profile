@@ -64,10 +64,13 @@
 							</div>
 							{#if $user && $isLoggedIn}
 								<div class="flex flex-col justify-start gap-4">
-									<Button variant="default" class="cursor-pointer" href="/settings">Settings</Button
+									<Button variant="default" class="w-full cursor-pointer" href="/settings"
+										>Settings</Button
 									>
 									<form method="POST" action="/logout">
-										<Button variant="destructive" type="submit">Logout</Button>
+										<Button variant="destructive" class="w-full cursor-pointer" type="submit"
+											>Logout</Button
+										>
 									</form>
 								</div>
 							{/if}

@@ -11,6 +11,7 @@
 	import { goto } from '$app/navigation';
 	import ThemeSelector from '@/lib/components/ThemeSelector.svelte';
 	import { themeStore } from '@/lib/stores/themeStore';
+	import Separator from '@/lib/components/ui/separator/separator.svelte';
 
 	let { data } = $props();
 
@@ -57,13 +58,13 @@
 				</div>
 				<div>
 					<Label for="title">Resume Attachment</Label>
-					fileUrl={$formData.resumeUrl}
 					<FileInputPlaceholder
 						icon={Upload}
 						title="Click to upload or drag and drop"
 						onChange={(url) => {
 							$formData.resumeUrl = url;
 						}}
+						fileUrl={$formData.resumeUrl}
 					/>
 				</div>
 
@@ -79,9 +80,9 @@
 					/>
 				</div>
 			</div>
-
+			<Separator />
 			<div class="mt-2 flex">
-				<Button type="submit" class="ml-auto">Update</Button>
+				<Button type="submit" class="ml-auto cursor-pointer">Update</Button>
 			</div>
 		</form>
 	</div>

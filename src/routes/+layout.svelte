@@ -9,33 +9,50 @@
 	import { themeStore } from '$lib/stores/themeStore';
 	import { onDestroy, onMount } from 'svelte';
 
-	let previousStyles: HTMLStyleElement | null = null;
+	let previousStyle: HTMLStyleElement | null = null;
 
 	let { children, data } = $props();
 
-	onMount(async () => {
-		switch (data.user.theme) {
-			case 'claude': {
-				await import('../theme/claude.css');
-				break;
-			}
-			case 'mono': {
-				await import('../theme/mono.css');
-				break;
-			}
-			case 'modern-minimal': {
-				await import('../theme/modern-minimal.css');
-				break;
-			}
-			default:
-				await import('../theme/default.css');
-				break;
-		}
-	});
-
 	userStore.setUser(data.user);
 	userStore.setIsLoggedIn(data.isLoggedIn);
-	themeStore.set(data.user.theme);
+
+	if (data.user.theme) {
+		themeStore.set(data.user.theme);
+	}
+
+	$effect(() => {
+		if (!$themeStore) return;
+		loadTheme($themeStore);
+	});
+
+	async function loadTheme(theme: string) {
+		if (previousStyle) {
+			previousStyle.remove();
+			previousStyle = null;
+		}
+		let mod;
+		switch (theme) {
+			case 'claude':
+				mod = await import('../theme/claude.css?inline');
+				break;
+			case 'mono':
+				mod = await import('../theme/mono.css?inline');
+				break;
+			case 'modern-minimal':
+				mod = await import('../theme/modern-minimal.css?inline');
+				break;
+			default:
+				mod = await import('../theme/default.css?inline');
+		}
+		previousStyle = injectStyle(mod.default);
+	}
+
+	function injectStyle(content: string) {
+		const style = document.createElement('style');
+		style.textContent = content;
+		document.head.appendChild(style);
+		return style;
+	}
 </script>
 
 <ModeWatcher />

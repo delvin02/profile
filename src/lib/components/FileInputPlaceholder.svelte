@@ -1,10 +1,9 @@
 <script lang="ts">
-	import { Trash } from '@lucide/svelte/icons/trash';
-	import { SquareArrowOutUpRight } from '@lucide/svelte/icons/square-arrow-out-up-right';
+	import Trash from '@lucide/svelte/icons/trash';
+	import SquareArrowOutUpRight from '@lucide/svelte/icons/square-arrow-out-up-right';
 	import { type Icon } from '@lucide/svelte';
 	import { toast } from 'svelte-sonner';
 	import { cn } from '../utils';
-	import { userStore } from '../stores/userStore';
 
 	interface Props {
 		icon: typeof Icon;
@@ -16,8 +15,7 @@
 
 	const { icon, fileUrl = null, title, onChange, class: className = '' }: Props = $props();
 
-	let fileInput: HTMLInputElement;
-
+	let fileInput = $state<HTMLInputElement | null>(null);
 	let isDragging = $state(false);
 
 	function onDragOver(e: DragEvent) {
@@ -69,7 +67,7 @@
 	}
 
 	function handleClick() {
-		fileInput.click();
+		fileInput?.click();
 	}
 
 	async function onFileSelected(event: Event) {
