@@ -20,6 +20,14 @@
 		"db:studio": "drizzle-kit studio",
 		"vercel-build": "bun run db:push && bun run build"
 	},
+	"browserslist": [
+		"last 2 versions",
+		"> 0.25%",
+		"not dead",
+		"iOS >= 12",
+		"Chrome >= 49",
+		"Firefox >= 48"
+	],
 	"files": [
 		"dist",
 		"!dist/**/*.test.*",
@@ -122,6 +130,7 @@
 		"@types/cookie": "^1.0.0",
 		"@types/jsdom": "^21.1.7",
 		"@types/node": "^24.0.7",
+		"@vitejs/plugin-legacy": "^7.1.0",
 		"bcrypt": "^6.0.0",
 		"date-fns": "^4.1.0",
 		"drizzle-kit": "^0.31.4",
