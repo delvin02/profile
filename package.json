@@ -28,6 +28,12 @@
 	"sideEffects": [
 		"**/*.css"
 	],
+	"browserslist": [
+		"> 0.5%",
+		"last 2 versions",
+		"iOS >= 14",
+		"Safari >= 14"
+	],
 	"svelte": "./dist/index.js",
 	"types": "./dist/index.d.ts",
 	"type": "module",
@@ -59,6 +65,7 @@
 		"@tailwindcss/typography": "^0.5.15",
 		"@tailwindcss/vite": "^4.0.0",
 		"@types/bun": "^1.2.17",
+		"@vitejs/plugin-legacy": "^7.1.0",
 		"@vitest/browser": "^3.2.4",
 		"@vitest/coverage-v8": "^3.2.4",
 		"bits-ui": "^2.8.6",

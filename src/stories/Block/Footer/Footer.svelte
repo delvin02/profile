@@ -14,12 +14,12 @@
 	<div class="flex w-full flex-col">
 		<div class="mx-auto my-4 flex gap-1">
 			{#if $user.linkedInUrl}
-				<Button variant="secondary" class="cursor-pointer">
+				<Button variant="secondary" href={$user.linkedInUrl} target="_blank" class="cursor-pointer">
 					<Linkedin class="size-6" href={$user.linkedInUrl} />
 				</Button>
 			{/if}
 			{#if $user.resumeUrl}
-				<Button variant="secondary" class="cursor-pointer" href={$user.resumeUrl}
+				<Button variant="secondary" class="cursor-pointer" href={$user.resumeUrl} target="_blank"
 					><FileUser class="size-6" />
 				</Button>
 			{/if}
