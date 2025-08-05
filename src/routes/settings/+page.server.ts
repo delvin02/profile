@@ -45,7 +45,7 @@ export const actions: Actions = {
 			return fail(400, { form });
 		}
 
-		const { resumeUrl, linkedInUrl, theme, metaDescription } = form.data;
+		const { resumeUrl, linkedInUrl, theme, metaDescription, googleTagId } = form.data;
 
 		await db
 			.update(user)
@@ -53,7 +53,8 @@ export const actions: Actions = {
 				linkedInUrl,
 				resumeUrl,
 				theme,
-				metaDescription
+				metaDescription,
+				googleTagId
 			})
 			.where(eq(user.id, locals.auth.id));
 

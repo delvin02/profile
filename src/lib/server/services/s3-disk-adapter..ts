@@ -47,6 +47,7 @@ export class S3DiskAdapter implements ImageService {
 	 */
 	async upload(buffer: Buffer, filename: string) {
 		const key = `uploads/${Date.now()}-${filename}`;
+		const ext = extname(filename).toLowerCase();
 
 		const contentType = (() => {
 			const ext = extname(filename).toLowerCase();
@@ -56,12 +57,15 @@ export class S3DiskAdapter implements ImageService {
 			return 'application/octet-stream';
 		})();
 
+		const contentDisposition = ext === '.pdf' ? 'inline' : undefined;
+
 		await this.client.send(
 			new PutObjectCommand({
 				Bucket: this.bucket,
 				Key: key,
 				Body: buffer,
-				ContentType: contentType
+				ContentType: contentType,
+				...(contentDisposition && { ContentDisposition: contentDisposition })
 			})
 		);
 

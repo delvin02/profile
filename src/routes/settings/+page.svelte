@@ -50,6 +50,16 @@
 			<h3>For SEO</h3>
 			<div class="my-2 flex flex-col gap-4">
 				<div>
+					<Label for="title">Google Tag Id</Label>
+					<Textarea
+						class="text-muted-foreground border-primary/80 mt-1 w-full border-b border-dashed text-left text-xl lg:text-2xl"
+						bind:value={$formData.googleTagId}
+						name="googleTagId"
+						placeholder="Enter your Google Tag ID"
+						{...$constraints.googleTagId}
+					/>
+				</div>
+				<div>
 					<Label for="title">Description</Label>
 					<Textarea
 						class="text-muted-foreground border-primary/80 mt-1 w-full border-b border-dashed text-left text-xl lg:text-2xl"
