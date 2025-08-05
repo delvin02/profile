@@ -1,14 +1,14 @@
-import { error, redirect, type Actions } from '@sveltejs/kit';
+import { error, redirect, type Actions, type ServerLoadEvent } from '@sveltejs/kit';
 import { db } from '$lib/server/db';
 import { blog, type Blog } from '$lib/server/db/schema/blog';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
 import { schema } from './schema';
 import { tag } from '@/lib/server/db/schema/tag';
 import { blogTags } from '@/lib/server/db/schema/blogTags';
 
-export async function load({ params, locals }) {
+export async function load({ params, locals }: ServerLoadEvent) {
 	if (!locals.auth) {
 		throw redirect(302, '/login');
 	}
@@ -33,7 +33,7 @@ export async function load({ params, locals }) {
 			readingTime: blog.readingTime
 		})
 		.from(blog)
-		.where(eq(blog.slug, slug))
+		.where(and(eq(blog.slug, slug), eq(blog.userId, locals.auth.id)))
 		.limit(1);
 
 	if (!post) {

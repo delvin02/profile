@@ -1,10 +1,10 @@
-import { error } from '@sveltejs/kit';
+import { error, type ServerLoadEvent } from '@sveltejs/kit';
 import { db } from '$lib/server/db';
 import { blog } from '$lib/server/db/schema/blog';
 import { eq } from 'drizzle-orm';
 import { user } from '@/lib/server/db/schema/user.js';
 
-export async function load({ params, locals }) {
+export async function load({ params, locals }: ServerLoadEvent) {
 	if (!locals.subdomain) {
 		throw error(400, 'Subdomain not found');
 	}

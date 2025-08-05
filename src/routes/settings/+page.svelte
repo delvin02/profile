@@ -12,6 +12,7 @@
 	import ThemeSelector from '@/lib/components/ThemeSelector.svelte';
 	import { themeStore } from '@/lib/stores/themeStore';
 	import Separator from '@/lib/components/ui/separator/separator.svelte';
+	import Textarea from '@/lib/components/ui/textarea/textarea.svelte';
 
 	let { data } = $props();
 
@@ -44,8 +45,23 @@
 		>
 			Settings
 		</h2>
+		<Separator />
 		<form method="POST" use:enhance>
-			<div class="mt-4 flex flex-col gap-4">
+			<h3>For SEO</h3>
+			<div class="my-2 flex flex-col gap-4">
+				<div>
+					<Label for="title">Description</Label>
+					<Textarea
+						class="text-muted-foreground border-primary/80 mt-1 w-full border-b border-dashed text-left text-xl lg:text-2xl"
+						bind:value={$formData.metaDescription}
+						name="metaDescription"
+						placeholder="Enter a brief description about yourself (max 160 characters)"
+						{...$constraints.metaDescription}
+					/>
+				</div>
+			</div>
+			<h3 class="mt-4">For Profile</h3>
+			<div class="my-2 flex flex-col gap-4">
 				<div>
 					<Label for="title">LinkedIn URL</Label>
 					<input
@@ -69,7 +85,7 @@
 				</div>
 
 				<div>
-					<Label for="title">Theme</Label>
+					<Label for="title" class="mb-4">Theme</Label>
 					<ThemeSelector
 						onThemeChange={(theme) => {
 							$formData.theme = theme;

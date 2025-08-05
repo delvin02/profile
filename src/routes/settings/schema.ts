@@ -6,5 +6,6 @@ export type Theme = z.infer<typeof themeSchema>;
 export const userSettingsSchema = z.object({
 	linkedInUrl: z.url().nullable(),
 	resumeUrl: z.string().nullable(),
+	metaDescription: z.string().max(160).nullable(),
 	theme: z.string()
 });

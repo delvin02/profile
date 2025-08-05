@@ -4,7 +4,9 @@ import { blog } from '$lib/server/db/schema/blog';
 import { blogTags, tag, user } from '@/lib/server/db/schema';
 import { eq } from 'drizzle-orm';
 
-export async function load({ locals }) {
+import type { ServerLoadEvent } from '@sveltejs/kit';
+
+export async function load({ locals }: ServerLoadEvent) {
 	if (!locals.subdomain) {
 		throw error(400, 'Subdomain not found');
 	}
@@ -27,6 +29,10 @@ export async function load({ locals }) {
 					tag: true
 				}
 			}
+		},
+		where: eq(blog.userId, currentUser.id),
+		columns: {
+			content: false
 		},
 		orderBy: blog.createdAt,
 		limit: 2

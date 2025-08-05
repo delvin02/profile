@@ -1,4 +1,4 @@
-import { error, fail, redirect, type Actions } from '@sveltejs/kit';
+import { error, fail, redirect, type Actions, type ServerLoadEvent } from '@sveltejs/kit';
 import { db } from '$lib/server/db';
 import { user } from '@/lib/server/db/schema';
 import { eq } from 'drizzle-orm';
@@ -7,7 +7,7 @@ import { zod4 } from 'sveltekit-superforms/adapters';
 import { userSettingsSchema } from './schema';
 import { getAllThemes } from '@/lib/themes';
 
-export async function load({ locals }) {
+export async function load({ locals }: ServerLoadEvent) {
 	if (!locals.auth) {
 		throw redirect(302, '/login');
 	}
@@ -45,14 +45,15 @@ export const actions: Actions = {
 			return fail(400, { form });
 		}
 
-		const { resumeUrl, linkedInUrl, theme } = form.data;
+		const { resumeUrl, linkedInUrl, theme, metaDescription } = form.data;
 
 		await db
 			.update(user)
 			.set({
 				linkedInUrl,
 				resumeUrl,
-				theme
+				theme,
+				metaDescription
 			})
 			.where(eq(user.id, locals.auth.id));
 

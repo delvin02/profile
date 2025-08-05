@@ -19,6 +19,7 @@ export const user = mysqlTable('user', {
 	bio: json('bio'),
 	googleTagId: varchar('google_tag_id', { length: 256 }),
 	blogHeadline: varchar('blog_headline', { length: 256 }),
+	metaDescription: varchar('meta_description', { length: 160 }).default(''),
 	theme: varchar('theme', { length: 255 }).$type<Theme>().notNull().default('default'),
 	...timestamps
 });

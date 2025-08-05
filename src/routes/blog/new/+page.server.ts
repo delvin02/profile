@@ -1,4 +1,4 @@
-import { error, redirect, type Actions } from '@sveltejs/kit';
+import { error, redirect, type Actions, type ServerLoadEvent } from '@sveltejs/kit';
 import { db } from '$lib/server/db';
 import { blog, type NewBlog } from '$lib/server/db/schema/blog';
 import { superValidate } from 'sveltekit-superforms';
@@ -8,7 +8,7 @@ import { blogTags } from '@/lib/server/db/schema/blogTags';
 import { createBlogSchema } from './schema';
 import { slugify } from '@/lib/utils/blog';
 
-export async function load({ locals }) {
+export async function load({ locals }: ServerLoadEvent) {
 	if (!locals.auth) {
 		throw redirect(302, '/login');
 	}

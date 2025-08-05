@@ -5,8 +5,9 @@ import { eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
 import { blogPageEditSchema } from './schema';
+import type { ServerLoadEvent } from '@sveltejs/kit';
 
-export async function load({ locals }) {
+export async function load({ locals }: ServerLoadEvent) {
 	if (!locals.auth) {
 		throw redirect(302, '/login');
 	}

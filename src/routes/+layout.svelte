@@ -7,7 +7,6 @@
 	import { Toaster } from '@/lib/components/ui/sonner/index.js';
 	import { userStore } from '$lib/stores/userStore';
 	import { themeStore } from '$lib/stores/themeStore';
-	import { onDestroy, onMount } from 'svelte';
 
 	let previousStyle: HTMLStyleElement | null = null;
 
@@ -54,6 +53,24 @@
 		return style;
 	}
 </script>
+
+<svelte:head>
+	<!-- Google Tag Manager-->
+	{#if data.user?.googleTagId}
+		<script
+			async
+			src="https://www.googletagmanager.com/gtag/js?id={data.user.googleTagId}"
+		></script>
+		{@html `
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', '${data.user.googleTagId}');
+		<\/script>
+	`}
+	{/if}
+</svelte:head>
 
 <ModeWatcher />
 <Toaster position="top-center" richColors />

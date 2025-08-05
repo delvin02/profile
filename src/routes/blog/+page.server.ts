@@ -1,12 +1,27 @@
-import { error } from '@sveltejs/kit';
+import { error, type ServerLoadEvent } from '@sveltejs/kit';
 import { db } from '$lib/server/db';
 import { blog } from '$lib/server/db/schema/blog';
-import { blogTags, tag } from '@/lib/server/db/schema';
+import { blogTags, tag, user } from '@/lib/server/db/schema';
 import { eq, inArray } from 'drizzle-orm';
 import type { SQL } from 'drizzle-orm';
 import { isNull } from 'drizzle-orm';
 
-export async function load({ locals, url }) {
+export async function load({ locals, url }: ServerLoadEvent) {
+	if (!locals.subdomain) {
+		throw error(400, 'Subdomain not found');
+	}
+
+	const currentUser = await db.query.user.findFirst({
+		columns: {
+			passwordHash: false
+		},
+		where: eq(user.subdomain, locals.subdomain)
+	});
+
+	if (!currentUser) {
+		throw error(404, 'User not found');
+	}
+
 	const tagsList = await db
 		.select({ id: tag.id, name: tag.name })
 		.from(tag)
@@ -15,7 +30,7 @@ export async function load({ locals, url }) {
 		.orderBy(tag.name);
 
 	const tagIdParam = url.searchParams.get('tagId');
-	const whereConditions: SQL[] = [];
+	const whereConditions: SQL[] = [eq(blog.userId, currentUser.id)];
 
 	if (!locals.auth) {
 		whereConditions.push(isNull(blog.deletedAt));
