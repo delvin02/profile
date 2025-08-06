@@ -8,19 +8,30 @@ import { blogTags } from '@/lib/server/db/schema/blogTags';
 import { createBlogSchema } from './schema';
 import { slugify } from '@/lib/utils/blog';
 import { eq } from 'drizzle-orm';
+import { user } from '@/lib/server/db/schema';
 
 export async function load({ locals }: ServerLoadEvent) {
 	if (!locals.auth) {
 		throw redirect(302, '/login');
 	}
 
+	const currentUser = await db.query.user.findFirst({
+		columns: {
+			passwordHash: false
+		},
+		where: eq(user.id, locals.auth.id)
+	});
+
+	if (!currentUser) {
+		throw error(404, 'User not found');
+	}
 	const allTags = await db
 		.select({ id: tag.id, name: tag.name })
 		.from(tag)
-		.where(eq(tag.userId, locals.auth.id));
+		.where(eq(tag.userId, currentUser.id));
 
 	const form = await superValidate(
-		{ title: 'Enter title here', description: 'Enter description here', content: {}, tags: [] },
+		{ title: '', description: '', content: {}, tags: [] },
 		zod4(createBlogSchema)
 	);
 
