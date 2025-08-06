@@ -26,6 +26,7 @@ export async function load({ locals, url }: ServerLoadEvent) {
 		.select({ id: tag.id, name: tag.name })
 		.from(tag)
 		.innerJoin(blogTags, eq(blogTags.tagId, tag.id))
+		.where(eq(tag.userId, currentUser.id))
 		.groupBy(tag.id, tag.name)
 		.orderBy(tag.name);
 

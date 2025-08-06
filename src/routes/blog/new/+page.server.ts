@@ -7,13 +7,17 @@ import { tag } from '@/lib/server/db/schema/tag';
 import { blogTags } from '@/lib/server/db/schema/blogTags';
 import { createBlogSchema } from './schema';
 import { slugify } from '@/lib/utils/blog';
+import { eq } from 'drizzle-orm';
 
 export async function load({ locals }: ServerLoadEvent) {
 	if (!locals.auth) {
 		throw redirect(302, '/login');
 	}
 
-	const allTags = await db.select({ id: tag.id, name: tag.name }).from(tag);
+	const allTags = await db
+		.select({ id: tag.id, name: tag.name })
+		.from(tag)
+		.where(eq(tag.userId, locals.auth.id));
 
 	const form = await superValidate(
 		{ title: 'Enter title here', description: 'Enter description here', content: {}, tags: [] },

@@ -13,6 +13,7 @@
 	import { themeStore } from '@/lib/stores/themeStore';
 	import Separator from '@/lib/components/ui/separator/separator.svelte';
 	import Textarea from '@/lib/components/ui/textarea/textarea.svelte';
+	import Input from '@/lib/components/ui/input/input.svelte';
 
 	let { data } = $props();
 
@@ -51,8 +52,8 @@
 			<div class="my-2 flex flex-col gap-4">
 				<div>
 					<Label for="title">Google Tag Id</Label>
-					<Textarea
-						class="text-muted-foreground border-primary/80 mt-1 w-full border-b border-dashed text-left text-xl lg:text-2xl"
+					<Input
+						class="border-primary/80  mt-1 w-full border-b border-dashed text-left text-xl lg:text-2xl"
 						bind:value={$formData.googleTagId}
 						name="googleTagId"
 						placeholder="Enter your Google Tag ID"
@@ -62,7 +63,7 @@
 				<div>
 					<Label for="title">Description</Label>
 					<Textarea
-						class="text-muted-foreground border-primary/80 mt-1 w-full border-b border-dashed text-left text-xl lg:text-2xl"
+						class="border-primary/80 mt-1 w-full border-b border-dashed text-left text-xl lg:text-2xl"
 						bind:value={$formData.metaDescription}
 						name="metaDescription"
 						placeholder="Enter a brief description about yourself (max 160 characters)"
@@ -74,8 +75,8 @@
 			<div class="my-2 flex flex-col gap-4">
 				<div>
 					<Label for="title">LinkedIn URL</Label>
-					<input
-						class="text-muted-foreground border-primary/80 mt-1 w-full border-b border-dashed text-left text-xl lg:text-2xl"
+					<Input
+						class="border-primary/80 mt-1 w-full border-b border-dashed text-left text-xl lg:text-2xl"
 						bind:value={$formData.linkedInUrl}
 						name="linkedInUrl"
 						placeholder="https://www.linkedin.com/in/..."
@@ -106,7 +107,6 @@
 					/>
 				</div>
 			</div>
-			<Separator />
 			<div class="mt-2 flex">
 				<Button type="submit" class="ml-auto cursor-pointer">Update</Button>
 			</div>

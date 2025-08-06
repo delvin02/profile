@@ -14,7 +14,7 @@
 			type="button"
 			class="relative cursor-pointer rounded-lg border-2 bg-white p-4 transition-all duration-200 hover:border-gray-300 {selectedTheme ===
 			theme.name
-				? 'border-blue-500 ring-2 ring-blue-200'
+				? 'border-primary ring-primary ring-2'
 				: 'border-gray-200'}"
 			on:click={() => onThemeChange(theme.name)}
 			aria-label="Select {theme.displayName} theme"

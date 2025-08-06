@@ -16,7 +16,7 @@ export const SlashCommand = Extension.create<SlashExtensionOptions>({
 		return {
 			suggestion: {
 				char: '/',
-				allowSpaces: true,
+				allowSpaces: false,
 				pluginKey: new PluginKey(extensionName),
 				allow: ({ editor, range }: { editor: Editor; range: Range; isActive?: boolean }) => {
 					const { state } = editor;

@@ -14,6 +14,8 @@
 			return;
 		}
 
+		const position = editor.state.selection.anchor;
+
 		const form = new FormData();
 		form.append('file', file);
 		let res: Response;
@@ -30,7 +32,7 @@
 		}
 		const { url } = await res.json();
 
-		editor.chain().focus().setImage({ src: url }).run();
+		editor.chain().setTextSelection(position).focus().setImage({ src: url }).run();
 	}
 
 	function handleClick() {
