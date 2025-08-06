@@ -16,7 +16,9 @@ export async function load({ locals }: ServerLoadEvent) {
 		.select({
 			linkedInUrl: user.linkedInUrl,
 			resumeUrl: user.resumeUrl,
-			theme: user.theme
+			theme: user.theme,
+			googleTagId: user.googleTagId,
+			metaDescription: user.metaDescription
 		})
 		.from(user)
 		.where(eq(user.id, locals.auth.id))

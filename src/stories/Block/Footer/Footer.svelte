@@ -24,14 +24,18 @@
 				</Button>
 			{/if}
 		</div>
-		<div class="my-2 flex flex-row justify-center gap-x-1.5 dark:text-white">
-			<p class="text-primary text-base leading-none font-bold">{$user.name.toUpperCase()}</p>
-			<p class="text-center text-base leading-none">© {year}</p>
-			<span class="text-base leading-none">|</span>
+		<div
+			class="my-2 flex flex-col items-center justify-center gap-2 text-xs
+         md:flex-row md:items-center md:gap-x-1.5 dark:text-white"
+		>
+			<div class="flex gap-x-2">
+				<p class="text-primary text-base leading-none font-bold">{$user.name.toUpperCase()}</p>
+				<p class="text-center text-base leading-none">© {year}</p>
+			</div>
+			<span class="hidden text-base leading-none md:inline-block">|</span>
 			<p class="text-base leading-none">
-				Made with ❤️ by <a href="https://delvin.portfolio-me.bio" target="_blank" class="underline"
-					>Delvin Khor</a
-				>
+				Made with ❤️ by
+				<a href="https://delvin.portfolio-me.bio" target="_blank" class="underline">Delvin Khor</a>
 			</p>
 		</div>
 	</div>

@@ -7,6 +7,6 @@ export const userSettingsSchema = z.object({
 	linkedInUrl: z.url().nullable(),
 	resumeUrl: z.string().nullable(),
 	metaDescription: z.string().max(160).nullable(),
-	googleTagId: z.string().optional(),
+	googleTagId: z.string().nullable(),
 	theme: z.string()
 });
