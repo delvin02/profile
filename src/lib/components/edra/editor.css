@@ -13,6 +13,11 @@
 	content: attr(data-placeholder);
 }
 
+.tiptap a {
+	color: oklch(62.3% 0.214 259.815);
+	text-decoration: underline;
+}
+
 /* Heading Styles */
 .tiptap h1,
 .tiptap h2,
