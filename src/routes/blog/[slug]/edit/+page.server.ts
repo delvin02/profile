@@ -110,7 +110,7 @@ export const actions: Actions = {
 		const now = new Date();
 
 		const result = await db.update(blog).set({ deletedAt: now }).where(eq(blog.id, id));
-\
+
 		if (!result) {
 			throw error(400, 'Failed to archive blog');
 		}
