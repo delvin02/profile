@@ -95,7 +95,7 @@ export const actions: Actions = {
 			await db.insert(blogTags).values(rows);
 		}
 
-		redirect(303, `/blog/${params.slug}`);
+		redirect(303, `/blog/${newBlog.slug}`);
 	},
 	archive: async ({ request, locals }) => {
 		if (!locals.auth) {
@@ -110,7 +110,7 @@ export const actions: Actions = {
 		const now = new Date();
 
 		const result = await db.update(blog).set({ deletedAt: now }).where(eq(blog.id, id));
-		console.log(result);
+\
 		if (!result) {
 			throw error(400, 'Failed to archive blog');
 		}
