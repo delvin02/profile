@@ -7,6 +7,7 @@ import { zod4 } from 'sveltekit-superforms/adapters';
 import { schema } from './schema';
 import { tag } from '@/lib/server/db/schema/tag';
 import { blogTags } from '@/lib/server/db/schema/blogTags';
+import { slugify } from '@/lib/utils/blog';
 
 export async function load({ params, locals }: ServerLoadEvent) {
 	if (!locals.auth) {
@@ -40,7 +41,10 @@ export async function load({ params, locals }: ServerLoadEvent) {
 		throw error(404, 'Blog post not found');
 	}
 
-	const allTags = await db.select({ id: tag.id, name: tag.name }).from(tag);
+	const allTags = await db
+		.select({ id: tag.id, name: tag.name })
+		.from(tag)
+		.where(eq(tag.userId, locals.auth.id));
 
 	const assigned = await db
 		.select({ id: blogTags.tagId })
@@ -75,6 +79,7 @@ export const actions: Actions = {
 
 		const newBlog: Partial<Blog> = {
 			title,
+			slug: slugify(title),
 			description,
 			thumbnailUrl,
 			content,

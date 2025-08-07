@@ -7,7 +7,7 @@
 	import type { Blog } from '../server/db/schema';
 
 	export interface BlogCardProps {
-		publishDate: Date;
+		publishDate?: Date;
 		imageSource: string | null;
 		imageAlt: string;
 		title: string;
@@ -29,8 +29,6 @@
 	}: BlogCardProps = $props();
 
 	const { user, isLoggedIn } = userStore;
-
-	const formattedDate = format(publishDate, 'MMMM d, yyyy');
 </script>
 
 <Card.Root class="w-full max-w-sm ">
@@ -38,15 +36,19 @@
 		<img
 			src={imageSource || '/images/no-image-found.png'}
 			alt={imageAlt}
-			class="w-full rounded-md"
+			class="mb-2 w-full rounded-md"
 		/>
-		<Card.Description class="my-1">{formattedDate}</Card.Description>
+		{#if blog.publishedAt}
+			<Card.Description class="text-muted-foreground my-1 text-sm">
+				{format(blog.publishedAt, 'MMMM d, yyyy')}
+			</Card.Description>
+		{/if}
 		<Card.Title class="mt-1">
 			<a href={link}>{title}</a>
 		</Card.Title>
-		{#if description}
+		{#if blog.description}
 			<Card.Description class="mt-1 italic">
-				{description}
+				{blog.description}
 			</Card.Description>
 		{/if}
 	</Card.Content>

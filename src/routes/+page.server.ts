@@ -34,7 +34,7 @@ export async function load({ locals }: ServerLoadEvent) {
 		columns: {
 			content: false
 		},
-		orderBy: blog.createdAt,
+		orderBy: blog.publishedAt,
 		limit: 2
 	});
 

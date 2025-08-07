@@ -72,7 +72,7 @@
 	{/if}
 
 	{#if data.user?.metaDescription}
-		<meta name="description" content="${data.user.metaDescription}" />
+		<meta name="description" content={data.user.metaDescription} />
 	{/if}
 </svelte:head>
 

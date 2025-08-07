@@ -58,7 +58,7 @@ export async function load({ locals, url }: ServerLoadEvent) {
 		columns: {
 			content: false
 		},
-		orderBy: blog.createdAt
+		orderBy: blog.publishedAt
 	});
 
 	return { blogs: posts, tags: tagsList };
