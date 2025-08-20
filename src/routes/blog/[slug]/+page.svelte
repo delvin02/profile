@@ -92,7 +92,7 @@
 		</div>
 
 		<div class="mt-8">
-			<div class="tiptap flex flex-col gap-6">
+			<div class="tiptap flex flex-col">
 				{@html htmlContent || 'No content available.'}
 			</div>
 		</div>
