@@ -43,7 +43,7 @@
 				{format(blog.publishedAt, 'MMMM d, yyyy')}
 			</Card.Description>
 		{/if}
-		<Card.Title class="mt-1">
+		<Card.Title class="mt-1 leading-normal">
 			<a href={link}>{title}</a>
 		</Card.Title>
 		{#if blog.description}

@@ -68,7 +68,7 @@ export async function load({ params, locals }: ServerLoadEvent) {
 }
 
 export const actions: Actions = {
-	update: async ({ params, request }) => {
+	update: async ({ request }) => {
 		const form = await superValidate(request, zod4(schema));
 		if (!form.valid) {
 			return { form };
