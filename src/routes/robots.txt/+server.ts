@@ -4,7 +4,7 @@ export const GET = async ({ locals }) => {
 		`User-agent: *
 Allow: /
 
-Sitemap: https://${sub}.portfolio.com/sitemap.xml`,
+Sitemap: https://${sub}.portfolio-me.bio/sitemap.xml`,
 		{
 			headers: { 'Content-Type': 'text/plain' }
 		}
