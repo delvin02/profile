@@ -4,6 +4,7 @@ export type User = {
 	id: number;
 	name: string;
 	email: string;
+	subdomain: string;
 	profilePictureUrl: string | null;
 	linkedInUrl: string | null;
 	resumeUrl: string | null;

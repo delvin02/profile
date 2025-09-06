@@ -2,7 +2,7 @@ import { error } from '@sveltejs/kit';
 import { db } from '$lib/server/db';
 import { blog } from '$lib/server/db/schema/blog';
 import { blogTags, tag, user } from '@/lib/server/db/schema';
-import { eq } from 'drizzle-orm';
+import { desc, eq } from 'drizzle-orm';
 
 import type { ServerLoadEvent } from '@sveltejs/kit';
 
@@ -34,7 +34,7 @@ export async function load({ locals }: ServerLoadEvent) {
 		columns: {
 			content: false
 		},
-		orderBy: blog.publishedAt,
+		orderBy: desc(blog.publishedAt),
 		limit: 2
 	});
 

@@ -11,7 +11,7 @@
 	import { userStore } from '@/lib/stores/userStore';
 
 	let { data } = $props();
-	const { user, isLoggedIn } = userStore;
+	const { user } = userStore;
 
 	let htmlContent = $state();
 	let loading: boolean = $state(true);
@@ -31,7 +31,6 @@
 <svelte:head>
 	<title>{data.blog.title}</title>
 	<meta name="description" content={data.blog.description} />
-	<link rel="canonical" href={'/blog/' + data.blog.slug} />
 
 	<meta property="og:type" content="article" />
 	<meta property="og:title" content={data.blog.title} />

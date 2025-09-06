@@ -7,6 +7,8 @@
 	import { Toaster } from '@/lib/components/ui/sonner/index.js';
 	import { userStore } from '$lib/stores/userStore';
 	import { themeStore } from '$lib/stores/themeStore';
+	import { getBaseUrl } from '@/lib/utils/url';
+	import { page } from '$app/state';
 
 	let previousStyle: HTMLStyleElement | null = null;
 
@@ -74,6 +76,11 @@
 	{#if data.user?.metaDescription}
 		<meta name="description" content={data.user.metaDescription} />
 	{/if}
+
+	{#if data.user?.subdomain}
+		<link rel="canonical" href={getBaseUrl(data.user.subdomain) + page.url.pathname} />
+	{/if}
+
 </svelte:head>
 
 <ModeWatcher />
