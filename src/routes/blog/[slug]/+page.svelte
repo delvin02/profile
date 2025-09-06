@@ -67,7 +67,7 @@
 			</p>
 		</div>
 
-		<div class="mt-8 flex flex-row items-center gap-2 text-sm">
+		<div class="mt-8 flex md:flex-row flex-col md:items-center gap-2 text-sm">
 			<div class="flex items-center gap-2">
 				<div class="flex size-8 items-center justify-center rounded-4xl bg-gray-200">
 					<Avatar.Root>
@@ -77,17 +77,19 @@
 				</div>
 				<p class="mt-0">Written by <b>{$user.name}</b></p>
 			</div>
-			{#if data.blog.publishedAt}
-				<p class="mt-0 font-bold">•</p>
-				<p class="text-muted-foreground mt-0">{publishedDate.format(data.blog.publishedAt)}</p>
-			{/if}
-			{#if data.blog.readingTime}
-				<p class="mt-0 font-bold">•</p>
-				<div class="flex items-center">
-					<Clock class="stroke-muted-foreground size-4" />
-					<p class="text-muted-foreground mt-0 pl-1">{data.blog.readingTime} min.</p>
-				</div>
-			{/if}
+			<div class="flex gap-3 items-center">
+				{#if data.blog.publishedAt}
+					<p class="mt-0 font-bold hidden md:visible">•</p>
+					<p class="text-muted-foreground mt-0">{publishedDate.format(data.blog.publishedAt)}</p>
+				{/if}
+				{#if data.blog.readingTime}
+					<p class="mt-0 font-bold hidden md:visible">•</p>
+					<div class="flex items-center">
+						<Clock class="stroke-muted-foreground size-auto" />
+						<p class="text-muted-foreground mt-0 pl-1">{data.blog.readingTime} min.</p>
+					</div>
+				{/if}
+			</div>
 		</div>
 
 		<div class="mt-8">

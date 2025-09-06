@@ -171,7 +171,7 @@
 			</div>
 		</div>
 
-		<div class="mt-8 flex flex-row items-center gap-2 text-sm">
+		<div class="mt-8 flex md:flex-row flex-col md:items-center gap-2 text-sm">
 			<div class="flex items-center gap-2">
 				<div class="flex size-8 items-center justify-center rounded-4xl">
 					<Avatar.Root class="my-auto">
@@ -185,50 +185,52 @@
 				</div>
 				<p class="mt-0">Written by <b>{data.user.name}</b></p>
 			</div>
-			<p class="mt-0 font-bold">•</p>
-			<p class="text-muted-foreground mt-0">
-				<Popover.Root>
-					<Popover.Trigger class="border-primary/80 rounded-none border-b border-dashed">
-						{#snippet child({ props })}
-							<Button
-								variant="ghost"
-								class="w-fit justify-start rounded-none text-left font-normal"
-								{...props}
-							>
-								<CalendarIcon class="mr-2 size-4" />
-								{publishedAtValue
-									? publishedDate.format(publishedAtValue.toDate(getLocalTimeZone()))
-									: 'Date'}
-							</Button>
-						{/snippet}
-					</Popover.Trigger>
-					<Popover.Content class="w-auto p-0">
-						<Calendar
-							bind:value={publishedAtValue}
-							type="single"
-							initialFocus
-							onValueChange={(v) => {
-								if (v) {
-									$formData.publishedAt = v.toString();
-								} else {
-									$formData.publishedAt = '';
-								}
-							}}
-						/>
-					</Popover.Content>
-				</Popover.Root>
-			</p>
-			<p class="mt-0 font-bold">•</p>
-			<div class="flex items-center">
-				<Clock class="stroke-muted-foreground size-4" />
-				<input
-					class="text-muted-foreground border-primary/80 my-0 max-w-8 border-b border-dashed text-center"
-					bind:value={$formData.readingTime}
-					name="readingTime"
-					placeholder="1"
-					{...$constraints.readingTime}
-				/>
-				<p class="text-muted-foreground mt-0 pl-1">min.</p>
+			<div class="flex gap-3 items-center">
+				<p class="mt-0 font-bold hidden md:visible">•</p>
+				<p class="text-muted-foreground mt-0">
+					<Popover.Root>
+						<Popover.Trigger class="border-primary/80 rounded-none border-b border-dashed">
+							{#snippet child({ props })}
+								<Button
+									variant="ghost"
+									class="w-fit justify-start rounded-none text-left font-normal"
+									{...props}
+								>
+									<CalendarIcon class="mr-2 size-4" />
+									{publishedAtValue
+										? publishedDate.format(publishedAtValue.toDate(getLocalTimeZone()))
+										: 'Date'}
+								</Button>
+							{/snippet}
+						</Popover.Trigger>
+						<Popover.Content class="w-auto p-0">
+							<Calendar
+								bind:value={publishedAtValue}
+								type="single"
+								initialFocus
+								onValueChange={(v) => {
+									if (v) {
+										$formData.publishedAt = v.toString();
+									} else {
+										$formData.publishedAt = '';
+									}
+								}}
+							/>
+						</Popover.Content>
+					</Popover.Root>
+				</p>
+				<p class="mt-0 font-bold hidden md:visible">•</p>
+				<div class="flex items-center">
+					<Clock class="stroke-muted-foreground size-4" />
+					<input
+						class="text-muted-foreground border-primary/80 my-0 max-w-8 border-b border-dashed text-center"
+						bind:value={$formData.readingTime}
+						name="readingTime"
+						placeholder="1"
+						{...$constraints.readingTime}
+					/>
+					<p class="text-muted-foreground mt-0 pl-1">min.</p>
+				</div>
 			</div>
 		</div>
 		<div class="mt-8">
