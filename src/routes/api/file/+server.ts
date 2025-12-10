@@ -14,8 +14,7 @@ export const POST: RequestHandler = async ({ request }) => {
 		throw error(400, 'File too big (max 5 MB)');
 	}
 
-	const ext = file.type ? file.type.split('/')[1] : 'bin';
-	const filename = `${crypto.randomUUID()}.${ext}`;
+	const filename = `${file.name}`;
 
 	const buffer = Buffer.from(await file.arrayBuffer());
 	const url = await fileService.upload(buffer, filename);

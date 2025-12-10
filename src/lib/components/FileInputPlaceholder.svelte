@@ -41,6 +41,7 @@
 			res = await fetch('/api/file', { method: 'POST', body: form });
 		} catch (err) {
 			toast.error('Upload failed');
+			console.error(err);
 			return;
 		}
 		if (!res.ok) {

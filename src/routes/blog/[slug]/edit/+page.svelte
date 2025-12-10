@@ -6,7 +6,7 @@
 	import { Avatar } from 'bits-ui';
 	import { type Content } from '@tiptap/core';
 	import Editor from '@/stories/Block/Editor/Editor.svelte';
-	import SuperDebug, { superForm } from 'sveltekit-superforms';
+	import { superForm } from 'sveltekit-superforms';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 	import { schema } from './schema';
 	import Label from '@/lib/components/ui/label/label.svelte';
@@ -15,15 +15,9 @@
 	import type { Tag } from '@/lib/server/db/schema/tag';
 	import Badge from '@/lib/components/ui/badge/badge.svelte';
 	import CreateEditTagDialog from '@/lib/components/CreateEditTagDialog.svelte';
-	import {
-		DateFormatter,
-		getLocalTimeZone,
-		parseDate,
-		toCalendarDate
-	} from '@internationalized/date';
+	import { DateFormatter, getLocalTimeZone, parseDate } from '@internationalized/date';
 	import { Calendar } from '$lib/components/ui/calendar/index.js';
 	import * as Popover from '$lib/components/ui/popover/index.js';
-	import { page } from '$app/stores';
 
 	let { data } = $props();
 
@@ -157,7 +151,7 @@
 					<Select.Trigger class="w-full border-dashed">
 						<div class="flex gap-2">
 							{#if selectedTags.length}
-								{#each selectedTags as tag}
+								{#each selectedTags as tag (tag.id)}
 									<Badge variant="secondary" class="font-mono font-semibold uppercase"
 										>{tag.name}</Badge
 									>
@@ -168,7 +162,7 @@
 						</div>
 					</Select.Trigger>
 					<Select.Content>
-						{#each data.allTags as tag}
+						{#each data.allTags as tag (tag.id)}
 							<Select.Item value={tag.id.toString()}>
 								{tag.name}
 							</Select.Item>
@@ -185,7 +179,7 @@
 			</div>
 		</div>
 
-		<div class="mt-8 flex md:flex-row flex-col md:items-center gap-2 text-sm">
+		<div class="mt-8 flex flex-col gap-2 text-sm md:flex-row md:items-center">
 			<div class="flex items-center gap-2">
 				<div class="flex size-8 items-center justify-center rounded-4xl bg-gray-200">
 					<Avatar.Root class="my-auto">
@@ -199,8 +193,8 @@
 				</div>
 				<p class="mt-0">Written by <b>{data.user.name}</b></p>
 			</div>
-			<div class="flex gap-3 items-center">
-				<p class="mt-0 font-bold hidden md:visible">•</p>
+			<div class="flex items-center gap-3">
+				<p class="mt-0 hidden font-bold md:visible">•</p>
 				<p class="text-muted-foreground mt-0">
 					<Popover.Root>
 						<Popover.Trigger class="border-primary/80 rounded-none border-b border-dashed py-0">
@@ -233,11 +227,11 @@
 						</Popover.Content>
 					</Popover.Root>
 				</p>
-				<p class="mt-0 font-bold hidden md:visible">•</p>
+				<p class="mt-0 hidden font-bold md:visible">•</p>
 				<div class="flex items-center">
 					<Clock class="stroke-muted-foreground size-auto" />
 					<input
-						class="text-muted-foreground h-9 border-primary/80 my-0 max-w-8 border-b border-dashed text-center"
+						class="text-muted-foreground border-primary/80 my-0 h-9 max-w-8 border-b border-dashed text-center"
 						bind:value={$formData.readingTime}
 						name="readingTime"
 						placeholder="1"

@@ -1,4 +1,4 @@
-import { mysqlTable, timestamp, int, primaryKey, unique } from 'drizzle-orm/mysql-core';
+import { mysqlTable, timestamp, int, unique } from 'drizzle-orm/mysql-core';
 import { relations, type InferSelectModel, type InferInsertModel } from 'drizzle-orm';
 import { blog } from './blog';
 import { tag } from './tag';

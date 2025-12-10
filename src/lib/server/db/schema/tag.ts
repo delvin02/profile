@@ -5,7 +5,7 @@ import { user } from './user';
 
 export const tag = mysqlTable('tag', {
 	id: int('id').primaryKey().autoincrement(),
-	name: varchar('name', { length: 100 }).notNull().unique(),
+	name: varchar('name', { length: 100 }).notNull(),
 	userId: int('user_id')
 		.notNull()
 		.references(() => user.id)

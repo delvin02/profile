@@ -46,16 +46,10 @@ export class S3DiskAdapter implements ImageService {
 	 * and returns its public URL.
 	 */
 	async upload(buffer: Buffer, filename: string) {
-		const key = `uploads/${Date.now()}-${filename}`;
-		const ext = extname(filename).toLowerCase();
+		const key = `uploads/${filename}-${Date.now()}`;
 
-		const contentType = (() => {
-			const ext = extname(filename).toLowerCase();
-			if (ext === '.jpg' || ext === '.jpeg') return 'image/jpeg';
-			if (ext === '.png') return 'image/png';
-			if (ext === '.gif') return 'image/gif';
-			return 'application/octet-stream';
-		})();
+		const ext = this.getExtension(filename);
+		const contentType = this.getContentType(filename);
 
 		const contentDisposition = ext === '.pdf' ? 'inline' : undefined;
 
@@ -70,6 +64,19 @@ export class S3DiskAdapter implements ImageService {
 		);
 
 		return `${this.publicUrlBase}/${key}`;
+	}
+
+	private getContentType(filename: string): string {
+		const ext = this.getExtension(filename);
+		if (ext === '.pdf') return 'application/pdf';
+		if (ext === '.jpg' || ext === '.jpeg') return 'image/jpeg';
+		if (ext === '.png') return 'image/png';
+		if (ext === '.gif') return 'image/gif';
+		return 'application/octet-stream';
+	}
+
+	private getExtension(filename: string): string {
+		return extname(filename).toLowerCase();
 	}
 
 	/**

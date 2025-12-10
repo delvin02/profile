@@ -33,7 +33,7 @@
 			if (result.type === 'success') {
 				toast.success('Profile updated');
 				themeStore.set($formData.theme);
-				userStore.refreshUser().then(() => goto('/'));
+				await userStore.refreshUser().then(() => goto('/'));
 			}
 		}
 	});

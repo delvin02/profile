@@ -1,5 +1,4 @@
 <script lang="ts">
-	import LoginForm from '$lib/components/login-form.svelte';
 	import { superForm } from 'sveltekit-superforms';
 	import { loginSchema } from './schema.js';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
@@ -26,7 +25,7 @@
 		},
 		onResult: async ({ result }) => {
 			if (result.type === 'success') {
-				userStore.refreshUser().then(() => goto('/'));
+				await userStore.refreshUser().then(() => goto('/'));
 			}
 		}
 	});

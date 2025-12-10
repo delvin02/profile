@@ -1,10 +1,9 @@
 <script lang="ts">
 	import Button from '@/lib/components/ui/button/button.svelte';
 	import Label from '@/lib/components/ui/label/label.svelte';
-	import SuperDebug, { superForm } from 'sveltekit-superforms';
+	import { superForm } from 'sveltekit-superforms';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 	import type { Content } from '@tiptap/core';
-	import { Input } from '@/lib/components/ui/input';
 	import ImageUp from '@lucide/svelte/icons/image-up';
 	import Editor from '@/stories/Block/Editor/Editor.svelte';
 	import { cn } from '@/lib/utils.js';
