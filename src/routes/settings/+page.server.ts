@@ -15,6 +15,7 @@ export async function load({ locals }: ServerLoadEvent) {
 	const [currentUser] = await db
 		.select({
 			linkedInUrl: user.linkedInUrl,
+			tabIconUrl: user.tabIconUrl,
 			resumeUrl: user.resumeUrl,
 			theme: user.theme,
 			googleTagId: user.googleTagId,
@@ -47,11 +48,12 @@ export const actions: Actions = {
 			return fail(400, { form });
 		}
 
-		const { resumeUrl, linkedInUrl, theme, metaDescription, googleTagId } = form.data;
+		const { resumeUrl, linkedInUrl, theme, metaDescription, googleTagId, tabIconUrl } = form.data;
 
 		await db
 			.update(user)
 			.set({
+				tabIconUrl,
 				linkedInUrl,
 				resumeUrl,
 				theme,

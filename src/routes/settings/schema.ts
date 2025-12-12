@@ -4,6 +4,7 @@ export const themeSchema = z.enum(['default', 'claude', 'mono', 'modern-minimal'
 export type Theme = z.infer<typeof themeSchema>;
 
 export const userSettingsSchema = z.object({
+	tabIconUrl: z.string().nullable(),
 	linkedInUrl: z.url().nullable(),
 	resumeUrl: z.string().nullable(),
 	metaDescription: z.string().max(160).nullable(),

@@ -14,6 +14,7 @@ export const user = mysqlTable('user', {
 	headline: varchar('headline', { length: 256 }).default(''),
 	profilePictureUrl: varchar('profile_picture_url', { length: 256 }),
 	passwordHash: varchar('password_hash', { length: 255 }).notNull(),
+	tabIconUrl: varchar('tab_icon_url', { length: 255 }),
 	linkedInUrl: varchar('linkedin_url', { length: 255 }),
 	resumeUrl: varchar('resume_url', { length: 255 }),
 	bio: json('bio'),

@@ -74,6 +74,17 @@
 			<h3 class="mt-4">For Profile</h3>
 			<div class="my-2 flex flex-col gap-4">
 				<div>
+					<Label for="title">Tab Icon</Label>
+					<FileInputPlaceholder
+						icon={Upload}
+						title="Click to upload or drag and drop (32x32)"
+						onChange={(url) => {
+							$formData.tabIconUrl = url;
+						}}
+						fileUrl={$formData.tabIconUrl}
+					/>
+				</div>
+				<div>
 					<Label for="title">LinkedIn URL</Label>
 					<Input
 						class="border-primary/80 mt-1 w-full border-b border-dashed text-left text-xl lg:text-2xl"

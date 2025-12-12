@@ -81,6 +81,11 @@
 		<link rel="canonical" href={getBaseUrl(data.user.subdomain) + page.url.pathname} />
 	{/if}
 
+	<link
+		rel="icon"
+		type="image/x-icon"
+		href={data.user?.tabIconUrl || '%sveltekit.assets%/favicon.ico'}
+	/>
 </svelte:head>
 
 <ModeWatcher />
