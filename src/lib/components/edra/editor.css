@@ -1,5 +1,9 @@
 /* Base TipTap Editor Styles with Light/Dark Theme Support */
 
+.tiptap {
+	overflow-wrap: break-word;
+}
+
 .tiptap :first-child {
 	margin-top: 0;
 }
@@ -106,8 +110,8 @@
 
 .tiptap ul,
 .tiptap ol {
-	padding: 0 1rem;
-	margin: 0.5rem 1rem 0.5rem 0.4rem;
+	padding: 0 0.4rem;
+	margin: 0.5rem 0rem 0.5rem 0.4rem;
 }
 
 .tiptap ul li p,

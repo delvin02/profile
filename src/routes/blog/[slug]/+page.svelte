@@ -67,7 +67,7 @@
 			</p>
 		</div>
 
-		<div class="mt-8 flex md:flex-row flex-col md:items-center gap-2 text-sm">
+		<div class="mt-8 flex flex-col gap-2 text-sm md:flex-row md:items-center">
 			<div class="flex items-center gap-2">
 				<div class="flex size-8 items-center justify-center rounded-4xl bg-gray-200">
 					<Avatar.Root>
@@ -77,13 +77,13 @@
 				</div>
 				<p class="mt-0">Written by <b>{$user.name}</b></p>
 			</div>
-			<div class="flex gap-3 items-center">
+			<div class="flex items-center gap-3">
 				{#if data.blog.publishedAt}
-					<p class="mt-0 font-bold hidden md:visible">•</p>
+					<p class="mt-0 hidden font-bold md:visible">•</p>
 					<p class="text-muted-foreground mt-0">{publishedDate.format(data.blog.publishedAt)}</p>
 				{/if}
 				{#if data.blog.readingTime}
-					<p class="mt-0 font-bold hidden md:visible">•</p>
+					<p class="mt-0 hidden font-bold md:visible">•</p>
 					<div class="flex items-center">
 						<Clock class="stroke-muted-foreground size-auto" />
 						<p class="text-muted-foreground mt-0 pl-1">{data.blog.readingTime} min.</p>
