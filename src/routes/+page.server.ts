@@ -5,6 +5,9 @@ import { blogTags, tag, user } from '@/lib/server/db/schema';
 import { desc, eq } from 'drizzle-orm';
 
 import type { ServerLoadEvent } from '@sveltejs/kit';
+import { generateHTML } from '@tiptap/html';
+import type { JSONContent } from '@tiptap/core';
+import { TIPTAP_EXTENSIONS } from '@/lib/components/edra/extensions/index.js';
 
 export async function load({ locals }: ServerLoadEvent) {
 	if (!locals.subdomain) {
@@ -52,9 +55,12 @@ export async function load({ locals }: ServerLoadEvent) {
 		.groupBy(tag.id, tag.name)
 		.orderBy(tag.name);
 
+	const bio =
+		generateHTML(currentUser.bio as JSONContent, TIPTAP_EXTENSIONS) || 'No content available';
 	return {
 		blogs: posts,
 		tags,
-		user: currentUser
+		user: currentUser,
+		bio
 	};
 }

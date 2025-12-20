@@ -1,19 +1,10 @@
 <script lang="ts">
 	import BlogCard from '@/lib/components/BlogCard.svelte';
-	import { TIPTAP_EXTENSIONS } from '@/lib/components/edra/extensions/index.js';
 	import Typewriter from '@/lib/components/Typewriter.svelte';
 	import Button from '@/lib/components/ui/button/button.svelte';
-	import { generateHTML, type JSONContent } from '@tiptap/core';
-	import { onMount } from 'svelte';
 
 	let { data } = $props();
-	let htmlContent = $state();
-
 	const user = data.user;
-
-	onMount(() => {
-		htmlContent = generateHTML(user.bio as JSONContent, TIPTAP_EXTENSIONS);
-	});
 </script>
 
 <svelte:head>
@@ -35,7 +26,7 @@
 			alt="{user.name}'s profile"
 		/>
 		<div class="tiptap flex flex-col">
-			{@html htmlContent || 'No content available.'}
+			{@html data.bio}
 		</div>
 	</div>
 	<div class="mt-8">
