@@ -55,7 +55,7 @@ export const GET: RequestHandler = async ({ locals, url }) => {
       ${urls}
     </urlset>`;
 
-	return new Response(sitemap, {
+	return new Response(sitemap.trim(), {
 		headers: {
 			'Content-Type': 'application/xml'
 		}
