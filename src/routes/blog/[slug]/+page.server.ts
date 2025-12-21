@@ -23,16 +23,7 @@ export async function load({ params, locals }: ServerLoadEvent) {
 		throw error(404, 'Blog post not found');
 	}
 
-	const currentUser = await db.query.user.findFirst({
-		where: eq(user.subdomain, locals.subdomain)
-	});
-
-	if (!currentUser) {
-		throw error(404, 'Blog post not found');
-	}
-
 	return {
-		blog: post,
-		user: currentUser
+		blog: post
 	};
 }

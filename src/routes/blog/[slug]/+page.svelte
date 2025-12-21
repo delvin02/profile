@@ -13,6 +13,7 @@
 
 	let { data } = $props();
 	const { user } = userStore;
+
 	let loading = $state(true);
 	const publishedDate = new DateFormatter('en-US', {
 		year: 'numeric',
@@ -70,7 +71,7 @@
 				<div class="flex size-8 items-center justify-center rounded-4xl bg-gray-200">
 					<Avatar.Root>
 						<Avatar.Image src={$user.profilePictureUrl} alt={$user.name} class="rounded-4xl" />
-						<Avatar.Fallback>{data.user.name[0].toUpperCase()}</Avatar.Fallback>
+						<Avatar.Fallback>{$user.name[0].toUpperCase()}</Avatar.Fallback>
 					</Avatar.Root>
 				</div>
 				<p class="mt-0">Written by <b>{$user.name}</b></p>
