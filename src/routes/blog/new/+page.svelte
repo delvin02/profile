@@ -143,7 +143,7 @@
 					<Select.Trigger class="w-full border-dashed">
 						<div class="flex gap-2">
 							{#if selectedTags.length}
-								{#each selectedTags as tag}
+								{#each selectedTags as tag (tag.id)}
 									<Badge variant="secondary" class="font-mono font-semibold uppercase"
 										>{tag.name}</Badge
 									>
@@ -154,7 +154,7 @@
 						</div>
 					</Select.Trigger>
 					<Select.Content>
-						{#each data.allTags as tag}
+						{#each data.allTags as tag (tag.id)}
 							<Select.Item value={tag.id.toString()}>
 								{tag.name}
 							</Select.Item>
@@ -171,7 +171,7 @@
 			</div>
 		</div>
 
-		<div class="mt-8 flex md:flex-row flex-col md:items-center gap-2 text-sm">
+		<div class="mt-8 flex flex-col gap-2 text-sm md:flex-row md:items-center">
 			<div class="flex items-center gap-2">
 				<div class="flex size-8 items-center justify-center rounded-4xl">
 					<Avatar.Root class="my-auto">
@@ -185,8 +185,8 @@
 				</div>
 				<p class="mt-0">Written by <b>{data.user.name}</b></p>
 			</div>
-			<div class="flex gap-3 items-center">
-				<p class="mt-0 font-bold hidden md:visible">•</p>
+			<div class="flex items-center gap-3">
+				<p class="mt-0 hidden font-bold md:visible">•</p>
 				<p class="text-muted-foreground mt-0">
 					<Popover.Root>
 						<Popover.Trigger class="border-primary/80 rounded-none border-b border-dashed">
@@ -219,7 +219,7 @@
 						</Popover.Content>
 					</Popover.Root>
 				</p>
-				<p class="mt-0 font-bold hidden md:visible">•</p>
+				<p class="mt-0 hidden font-bold md:visible">•</p>
 				<div class="flex items-center">
 					<Clock class="stroke-muted-foreground size-4" />
 					<input

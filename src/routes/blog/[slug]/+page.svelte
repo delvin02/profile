@@ -3,27 +3,25 @@
 	import ArrowLeft from '@lucide/svelte/icons/arrow-left';
 	import Clock from '@lucide/svelte/icons/clock';
 	import { Avatar } from 'bits-ui';
-	import { onMount } from 'svelte';
-	import { generateHTML, type JSONContent } from '@tiptap/core';
+	import { generateHTML } from '@tiptap/html';
+	import { type JSONContent } from '@tiptap/core';
 	import { TIPTAP_EXTENSIONS } from '@/lib/components/edra/extensions';
 	import Loading from '@/stories/Block/Loading/Loading.svelte';
 	import { DateFormatter } from '@internationalized/date';
 	import { userStore } from '@/lib/stores/userStore';
+	import { onMount } from 'svelte';
 
 	let { data } = $props();
 	const { user } = userStore;
-
-	let htmlContent = $state();
-	let loading: boolean = $state(true);
-
+	let loading = $state(true);
 	const publishedDate = new DateFormatter('en-US', {
 		year: 'numeric',
 		month: 'short',
 		day: 'numeric'
 	});
 
+	const htmlContent = generateHTML(data.blog.content as JSONContent, TIPTAP_EXTENSIONS);
 	onMount(() => {
-		htmlContent = generateHTML(data.blog.content as JSONContent, TIPTAP_EXTENSIONS);
 		loading = false;
 	});
 </script>

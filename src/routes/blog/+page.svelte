@@ -23,7 +23,7 @@
 	</div>
 	<div class="mt-8">
 		<div class="align-center mb-4 flex flex-row justify-center">
-			{#each data.tags as tag}
+			{#each data.tags as tag (tag.id)}
 				<Button variant="link" size="sm" href="/blog?tagId={tag.id}"
 					><Badge variant="secondary" class="font-mono font-semibold uppercase">{tag.name}</Badge
 					></Button
@@ -32,7 +32,7 @@
 		</div>
 		<div class="flex flex-col items-center gap-6">
 			<div class="flex flex-col gap-4 md:grid md:grid-cols-2">
-				{#each data.blogs as blog}
+				{#each data.blogs as blog (blog.id)}
 					<BlogCard
 						publishDate={blog.createdAt}
 						imageSource={blog.thumbnailUrl}

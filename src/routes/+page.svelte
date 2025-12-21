@@ -33,7 +33,7 @@
 		<h1 class="mb-6 text-center text-4xl font-bold">Some blogs I've wrote</h1>
 		<div class="flex flex-col items-center gap-6">
 			<div class="flex flex-col gap-4 md:grid md:grid-cols-2">
-				{#each data.blogs as blog}
+				{#each data.blogs as blog (blog.id)}
 					<BlogCard
 						publishDate={blog.createdAt}
 						imageSource={blog.thumbnailUrl}
