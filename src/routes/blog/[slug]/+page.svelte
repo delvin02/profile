@@ -57,7 +57,7 @@
 		<div class="mt-4 flex flex-col gap-4">
 			<h2
 				class="block w-full text-left text-4xl leading-tight font-semibold
-         break-all whitespace-normal dark:text-white"
+         break-normal whitespace-normal dark:text-white"
 			>
 				{data.blog.title}
 			</h2>

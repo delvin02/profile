@@ -25,7 +25,7 @@
 <section class="mx-auto w-2xl max-w-2xl flex-1 px-5 py-12 leading-6">
 	<div class="flex flex-col gap-4">
 		<h2
-			class="mb-4 inline-block h-full w-full text-center align-top text-4xl leading-1 font-semibold md:text-5xl dark:text-white"
+			class="mb-4 inline-block h-full w-full text-center align-top text-4xl leading-1 font-semibold break-normal md:text-5xl dark:text-white"
 		>
 			Blogs
 		</h2>
