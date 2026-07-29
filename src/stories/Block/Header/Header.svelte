@@ -2,12 +2,18 @@
 	import SunIcon from '@lucide/svelte/icons/sun';
 	import MoonIcon from '@lucide/svelte/icons/moon';
 	import Menu from '@lucide/svelte/icons/menu';
+	import Newspaper from '@lucide/svelte/icons/newspaper';
+	import FileText from '@lucide/svelte/icons/file-text';
+	import Settings from '@lucide/svelte/icons/settings';
+	import LogOut from '@lucide/svelte/icons/log-out';
 	import { toggleMode } from 'mode-watcher';
 	import { Button } from '@/lib/components/ui/button/index.js';
 	import { Separator } from '@/lib/components/ui/separator/index.js';
 	import {
 		Sheet,
 		SheetContent,
+		SheetHeader,
+		SheetTitle,
 		SheetOverlay,
 		SheetTrigger
 	} from '@/lib/components/ui/sheet/index.js';
@@ -50,44 +56,73 @@
 							</Button>
 						</SheetTrigger>
 
-						<SheetOverlay class="bg-transparent" />
+						<SheetOverlay class="bg-black/20 backdrop-blur-[1px]" />
 
 						<SheetContent
 							side="right"
-							class="flex h-full w-1/2 items-center justify-center bg-white/90 dark:bg-gray-800/90"
+							class="bg-background/95 flex h-full w-4/5 max-w-xs flex-col gap-0 backdrop-blur"
 						>
-							<div class="mt-4 flex flex-col gap-3 space-y-2">
-								<a
-									href="/blog"
-									onclick={closeMenu}
-									class="rounded px-2 py-1 text-2xl font-medium transition-all">Blog</a
-								>
-								{#if $user.resumeUrl}
+							<SheetHeader class="border-b px-5 py-4">
+								<SheetTitle class="text-base">Menu</SheetTitle>
+							</SheetHeader>
+
+							<nav class="flex flex-1 flex-col justify-between overflow-y-auto px-3 py-4">
+								<div class="flex flex-col gap-1">
+									<p
+										class="text-muted-foreground px-2 pb-1 text-xs font-semibold tracking-wide uppercase"
+									>
+										Navigate
+									</p>
 									<a
+										href="/blog"
 										onclick={closeMenu}
-										href={$user.resumeUrl}
-										class="rounded px-2 py-1 text-2xl font-medium transition-all">Resume</a
+										class="hover:bg-accent flex items-center gap-3 rounded-md px-2 py-2.5 text-base font-medium transition-colors"
 									>
-								{/if}
-							</div>
-							{#if $user && $isLoggedIn}
-								<div class="flex flex-col justify-start gap-4">
-									<Button
-										variant="default"
-										onclick={closeMenu}
-										class="w-full cursor-pointer"
-										href="/settings">Settings</Button
-									>
-									<form method="POST" action="/logout">
-										<Button
-											variant="destructive"
+										<Newspaper class="text-muted-foreground size-4" />
+										Blog
+									</a>
+									{#if $user.resumeUrl}
+										<a
 											onclick={closeMenu}
-											class="w-full cursor-pointer"
-											type="submit">Logout</Button
+											href={$user.resumeUrl}
+											class="hover:bg-accent flex items-center gap-3 rounded-md px-2 py-2.5 text-base font-medium transition-colors"
 										>
-									</form>
+											<FileText class="text-muted-foreground size-4" />
+											Resume
+										</a>
+									{/if}
 								</div>
-							{/if}
+
+								{#if $user && $isLoggedIn}
+									<div class="flex flex-col gap-2 border-t pt-4">
+										<p
+											class="text-muted-foreground px-2 pb-1 text-xs font-semibold tracking-wide uppercase"
+										>
+											Account
+										</p>
+										<Button
+											variant="ghost"
+											onclick={closeMenu}
+											href="/settings"
+											class="w-full cursor-pointer justify-start gap-3 px-2"
+										>
+											<Settings class="size-4" />
+											Settings
+										</Button>
+										<form method="POST" action="/logout">
+											<Button
+												variant="ghost"
+												onclick={closeMenu}
+												class="text-destructive hover:text-destructive w-full cursor-pointer justify-start gap-3 px-2"
+												type="submit"
+											>
+												<LogOut class="size-4" />
+												Logout
+											</Button>
+										</form>
+									</div>
+								{/if}
+							</nav>
 						</SheetContent>
 					</Sheet>
 				</div>

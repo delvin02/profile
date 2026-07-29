@@ -7,6 +7,8 @@
 	import { type JSONContent } from '@tiptap/core';
 	import { TIPTAP_EXTENSIONS } from '@/lib/components/edra/extensions';
 	import Loading from '@/stories/Block/Loading/Loading.svelte';
+	import TableOfContents from '@/lib/components/TableOfContents.svelte';
+	import { extractHeadings, injectHeadingIds } from '@/lib/utils/toc';
 	import { DateFormatter } from '@internationalized/date';
 	import { userStore } from '@/lib/stores/userStore';
 	import { onMount } from 'svelte';
@@ -21,7 +23,12 @@
 		day: 'numeric'
 	});
 
-	const htmlContent = generateHTML(data.blog.content as JSONContent, TIPTAP_EXTENSIONS);
+	const headings = extractHeadings(data.blog.content as JSONContent);
+	const showToc = headings.length >= 3;
+	const htmlContent = injectHeadingIds(
+		generateHTML(data.blog.content as JSONContent, TIPTAP_EXTENSIONS),
+		headings
+	);
 	onMount(() => {
 		loading = false;
 	});
@@ -46,55 +53,82 @@
 {#if loading}
 	<Loading />
 {:else}
-	<section class="mx-auto max-w-2xl flex-1 px-5 py-12 leading-6">
-		<Button variant="link" href="/blog">
-			<ArrowLeft />
-			Blogs
-		</Button>
-		{#if data.blog.thumbnailUrl}
-			<img src={data.blog.thumbnailUrl} alt="Blog thumbnail" class="mt-4 max-w-full rounded-lg" />
-		{/if}
-		<div class="mt-4 flex flex-col gap-4">
-			<h2
-				class="block w-full text-left text-4xl leading-tight font-semibold
+	<div class="mx-auto max-w-2xl px-5 py-12 lg:max-w-6xl">
+		<div class="lg:grid lg:grid-cols-[minmax(0,42rem)_240px] lg:justify-center lg:gap-16">
+			<section class="min-w-0 flex-1 leading-6">
+				<Button variant="link" href="/blog">
+					<ArrowLeft />
+					Blogs
+				</Button>
+				{#if data.blog.thumbnailUrl}
+					<img
+						src={data.blog.thumbnailUrl}
+						alt="Blog thumbnail"
+						class="mt-4 max-w-full rounded-lg"
+					/>
+				{/if}
+				<div class="mt-4 flex flex-col gap-4">
+					<h2
+						class="block w-full text-left text-4xl leading-tight font-semibold
          break-normal whitespace-normal dark:text-white"
-			>
-				{data.blog.title}
-			</h2>
-			<p class="text-muted-foreground my-0 text-left text-lg italic lg:text-xl">
-				{data.blog.description}
-			</p>
-		</div>
-
-		<div class="mt-8 flex flex-col gap-2 text-sm md:flex-row md:items-center">
-			<div class="flex items-center gap-2">
-				<div class="flex size-8 items-center justify-center rounded-4xl bg-gray-200">
-					<Avatar.Root>
-						<Avatar.Image src={$user.profilePictureUrl} alt={$user.name} class="rounded-4xl" />
-						<Avatar.Fallback>{$user.name[0].toUpperCase()}</Avatar.Fallback>
-					</Avatar.Root>
+					>
+						{data.blog.title}
+					</h2>
+					<p class="text-muted-foreground my-0 text-left text-lg italic lg:text-xl">
+						{data.blog.description}
+					</p>
 				</div>
-				<p class="mt-0">Written by <b>{$user.name}</b></p>
-			</div>
-			<div class="flex items-center gap-3">
-				{#if data.blog.publishedAt}
-					<p class="mt-0 hidden font-bold md:visible">•</p>
-					<p class="text-muted-foreground mt-0">{publishedDate.format(data.blog.publishedAt)}</p>
-				{/if}
-				{#if data.blog.readingTime}
-					<p class="mt-0 hidden font-bold md:visible">•</p>
-					<div class="flex items-center">
-						<Clock class="stroke-muted-foreground size-auto" />
-						<p class="text-muted-foreground mt-0 pl-1">{data.blog.readingTime} min.</p>
-					</div>
-				{/if}
-			</div>
-		</div>
 
-		<div class="mt-8">
-			<div class="tiptap flex flex-col">
-				{@html htmlContent || 'No content available.'}
-			</div>
+				<div class="mt-8 flex flex-col gap-2 text-sm md:flex-row md:items-center">
+					<div class="flex items-center gap-2">
+						<div class="flex size-8 items-center justify-center rounded-4xl bg-gray-200">
+							<Avatar.Root>
+								<Avatar.Image src={$user.profilePictureUrl} alt={$user.name} class="rounded-4xl" />
+								<Avatar.Fallback>{$user.name[0].toUpperCase()}</Avatar.Fallback>
+							</Avatar.Root>
+						</div>
+						<p class="mt-0">Written by <b>{$user.name}</b></p>
+					</div>
+					<div class="flex items-center gap-3">
+						{#if data.blog.publishedAt}
+							<p class="mt-0 hidden font-bold md:visible">•</p>
+							<p class="text-muted-foreground mt-0">
+								{publishedDate.format(data.blog.publishedAt)}
+							</p>
+						{/if}
+						{#if data.blog.readingTime}
+							<p class="mt-0 hidden font-bold md:visible">•</p>
+							<div class="flex items-center">
+								<Clock class="stroke-muted-foreground size-auto" />
+								<p class="text-muted-foreground mt-0 pl-1">{data.blog.readingTime} min.</p>
+							</div>
+						{/if}
+					</div>
+				</div>
+
+				{#if showToc}
+					<details class="border-border bg-muted/40 mt-8 rounded-lg border p-4 lg:hidden">
+						<summary class="cursor-pointer text-sm font-semibold">On this page</summary>
+						<div class="mt-3">
+							<TableOfContents {headings} />
+						</div>
+					</details>
+				{/if}
+
+				<div class="mt-8">
+					<div class="tiptap flex flex-col">
+						{@html htmlContent || 'No content available.'}
+					</div>
+				</div>
+			</section>
+
+			{#if showToc}
+				<aside class="hidden lg:block">
+					<div class="sticky top-24">
+						<TableOfContents {headings} />
+					</div>
+				</aside>
+			{/if}
 		</div>
-	</section>
+	</div>
 {/if}
